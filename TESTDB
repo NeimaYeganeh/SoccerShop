@@ -1,0 +1,92 @@
+insert into user
+values
+    ("Customer", "test_customer@gmail.com", "John", "Doe", );
+insert into user
+values
+    ("Employee", "test_emloyee@gmail.com", "Steve", "Jobs", );
+insert into user
+values
+    ("Admin", "test_admin@gmail.com", "Lubo", "Stanchev", );
+
+
+insert into item
+values
+    (1, "Jersey", "Messi FC ", "Barcelona", 120, 99);
+insert into item
+values
+    (2, "Jersey", "Paul Pogba ", "Manchester United",145, 3);
+insert into item
+values
+    (3, "Jersey", "Christian Ronaldo", "Home Champions League Jersey",  150, 34);
+insert into item
+values
+    (4, "Jersey", "Mohammed Saleh",  "Home Jersey by New Balance", 25,  12);
+insert into item
+values
+    (5, "Jersey", "Kevin De Bruyne", "Home Jersey by Nike", 75, 19);
+
+
+
+
+
+
+
+insert into category
+values
+    (1, "Jerseys");
+insert into category
+values
+    (2, "Shoes");
+insert into category
+values
+    (3, "Accessories");
+insert into category
+values  
+    (4, "Balls");
+insert into category
+values
+    (5, "Equipment");
+insert into category
+values
+    (6, "DVDS");
+insert into category
+values
+    (7, "Gifts");
+
+
+
+
+
+insert into dev.item_categories_category
+values
+    (1, 1);
+insert into dev.item_categories_category
+values
+    (1, 4);
+insert into dev.item_categories_category
+values
+    (2, 2);
+insert into dev.item_categories_category
+values
+    (3, 3);
+insert into dev.item_categories_category
+values
+    (4, 2);
+insert into dev.item_categories_category
+values
+    (4, 3);
+insert into dev.item_categories_category
+values
+    (5, 2);
+insert into dev.item_categories_category
+values
+    (6, 3);
+insert into dev.item_categories_category
+values
+    (7, 4);
+insert into dev.item_categories_category
+values
+    (8, 3);
+insert into dev.item_categories_category
+values
+    (8, 5);
