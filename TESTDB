@@ -87,6 +87,26 @@ values
 
 
 
+insert into item
+values
+    (5, "Ball", "Nike Strike Team Soccer Ball", "Made to stand out. Bring some flair to your practice with the Nike Strike Team Ball.", 14, 20);
+insert into item
+values
+    (5, "Ball", "Nike Pitch Team Soccer Ball - 24 Pack", "32 panels of machine-stitched TPU increases touch and durability. 
+", 329, 50);
+insert into item
+values
+    (5, "Ball", "Christie Rampone Signed Red Team USA Supporter Soccer Ball", "Rampone made her last appearance for the National Team during the 2015 Women's World Cup final", 169, 19);
+insert into item
+values
+    (5, "Ball", "Nike Strike Premier League Soccer Ball", "The Nike Strike Soccer Ball is designed for a consistent feel and easy visual tracking.", 29, 5);
+insert into item
+values
+    (5, "Ball", "adidas Finale Madrid Official Match Soccer Ball", "This is the official final match ball of the 2018/19 UEFA Champions League Knockout Rounds, including the final set for Madrid on June 1.", 164, 10);
+
+
+
+
 
 insert into category
 values
