@@ -26,6 +26,63 @@ values
     (5, "Jersey", "Kevin De Bruyne", "Home Jersey by Nike", 75, 19);
 
 
+insert into item
+values
+    (1, "Shoes", "Adidas Copa   ", "NETFIT upper works ", 150, 23);
+insert into item
+values
+    (2, "Shoes", "Nike Phantom", "Made to strike fear in the hearts of defenders",195, 3);
+insert into item
+values
+    (3, "Shoes", "Puma Future", "A 360-degree Flyknit upper",  120, 31);
+insert into item
+values
+    (4, "Shoes", "Mohammed Saleh",  "Built for speed on any court.", 125,  11);
+insert into item
+values
+    (5, "Shoes", "Kevin De Bruyne", "Lightweight podular plates in the heel", 175, 15);
+
+
+insert into item
+values
+    (1, "Accessories", "Champion Equipment Cart", "This cart will open loads of space in a cluttered closet, garage or basemen", 250, 21);
+insert into item
+values
+    (2, "Accessories", "Primed 4-Pack Collapsible Training Cones", "Built to improve speed and agility during your workouts",21, 100);
+insert into item
+values
+    (3, "Accessories", "PRIMED Soccer Training Sticks and Corner Flags - 4", "A 360-degree Flyknit upper",  30, 210);
+insert into item
+values
+    (4, "Accessories", "adidas Team Mundial Backpack",  " The updated design allows you to zip away your regulation size soccer ball into the main pocket.", 90,  150);
+insert into item
+values
+    (5, "Accessories", "Kwik Goal Soccer Goal Net Fastener ", "Make sure your soccer net is securely attached to the goal with the Kwik Goal® Net Fastener. ", 20, 25);
+
+
+
+DSG Youth Soccer Shin Socks
+
+
+
+
+
+
+insert into item
+values
+    (1, "Equipment", "Nike HyperWarm Academy Soccer Gloves ", "Textured palms help you grip the ball during throw-ins, while the flexible cuffs offer a secure fit.", 15, 990);
+insert into item
+values
+    (2, "Equipment", "Copper Fit Copper Infused Calf Sleeves", "Designed with copper infused fabric ",21, 7);
+insert into item
+values
+    (3, "Equipment", "Shock Doctor Reflective Compression Calf Sleeves", "Protect your skin from abrasions while keeping your calf muscles warm and active with the Shock Doctor® Reflective Compression Calf Sleeves.",  55, 1);
+insert into item
+values
+    (4, "Equipment", "Sof Sole Fit Neutral Arch Insole",  " This high-tech insole is made with a medium density material and neutral arch height to promote the natural range", 23,  0);
+insert into item
+values
+    (5, "Equipment", "DSG Youth Soccer Shin Socks ", Watch as your little one tacks on another goal for their squad as they remain confident and protected wearing the DSG® Youth Soccer Shin Socks.", 1, 25);
 
 
 
@@ -46,12 +103,8 @@ values
 insert into category
 values
     (5, "Equipment");
-insert into category
-values
-    (6, "DVDS");
-insert into category
-values
-    (7, "Gifts");
+
+
 
 
 
