@@ -3,6 +3,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 
 public class DatabaseConnector {
 
@@ -30,8 +32,8 @@ public class DatabaseConnector {
 	public static User getUser(String email) {
 		
 		User user = null;
-		Connection con = null;;
-		PreparedStatement stmt = null;;
+		Connection con = null;
+		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		
 		try {
@@ -66,8 +68,107 @@ public class DatabaseConnector {
 		return user;
 	}
 	
-	// store in DB
-	public static void storeUser(User user) {
+//	// should refactor to do password stuff
+//	public static void storeUser(User user) {
+//		
+//		Connection con = null;
+//		PreparedStatement stmt = null;
+//		ResultSet rs = null;
+//		
+//		try {
+//			
+//			con = getConnection();
+//			String stmtString = "SELECT 1 FROM Users WHERE Users.userID=?";
+//			stmt = con.prepareStatement(stmtString);
+//			stmt.setString(1, user.getUserId());
+//			rs = stmt.executeQuery();
+//		
+//			if (rs.next() && rs.getInt(1)==1) {
+//				return;
+//			}
+//			else {
+//				stmtString = "INSERT INTO Users("
+//			}
+//			
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			try {
+//				stmt.close();
+//				con.close();
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			}	
+//		}
+//	}
 	
+	public static ArrayList<Order> getOrders(String userId) {
+		
+		ArrayList<Order> orders = new ArrayList<>();
+		Connection con = null;
+		PreparedStatement stmt = null;;
+		ResultSet rs = null;
+		
+		try {
+			
+			con = getConnection();
+			String stmtString = "SELECT * FROM Orders WHERE Orders.userID=?";
+			stmt = con.prepareStatement(stmtString);
+			stmt.setString(1, userId);
+			rs = stmt.executeQuery();
+		
+			while (rs.next()) {
+				
+				Order order = new Order();
+				order.setUserId(rs.getString("userID"));
+				order.setOrderId(rs.getString("orderID"));
+				order.setPrice(rs.getFloat("price"));
+				order.setStatus(Order.Status.valueOf(rs.getString("status")));
+				orders.add(order);				
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}	
+		}
+		return orders;
+	}
+	
+	public static void storeOrder(Order order) {
+		
+		Connection con = null;
+		PreparedStatement stmt = null;;
+		
+		try {
+			
+			con = getConnection();
+			String stmtString = "INSERT INTO Orders(userID, price, status) VALUES (?, ?, ?)";
+			stmt = con.prepareStatement(stmtString, Statement.RETURN_GENERATED_KEYS);
+			stmt.setString(1, order.getUserId());
+			stmt.setFloat(2, order.getPrice());
+			stmt.setString(3, order.getStatus().toString());
+			stmt.executeUpdate();
+			
+			// update the Order object with the generated OrderID
+			ResultSet rs = stmt.getGeneratedKeys();
+			if (rs.next())
+				order.setOrderId(rs.getString("orderID"));
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}	
+		}
 	}
 }
