@@ -1,7 +1,7 @@
 import java.sql.*; 
 import java.util.*; 
 
-class SoccorShop
+class SoccerShop
 { 
 	static Connection connect;
    public static void main(String args[])
@@ -21,5 +21,3 @@ class SoccorShop
 	   } catch (Exception e) {System.out.println(e.getMessage());}
    }
 }
-
-class Play
