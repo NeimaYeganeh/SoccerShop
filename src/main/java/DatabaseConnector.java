@@ -211,22 +211,6 @@ public abstract class DatabaseConnector {
 		Connection con = null;
 		PreparedStatement stmt = null;
 		
-		public void setItemId(String itemId) {
-		this.itemId = itemId;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public void setPrice(double price) {
-		this.price = price;
-	}
-	public void setStock(int stock) {
-		this.stock = stock;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
 		try {
 			
 			con = getConnection();
