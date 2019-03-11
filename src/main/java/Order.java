@@ -5,10 +5,10 @@ public class Order {
 	
 	private String orderId;
 	private String userId;
-	private float price;
+	private double price;
 	private Status status;
 	
-	public Order(String orderId, String userId, float price, Status status) {
+	public Order(String orderId, String userId, double price, Status status) {
 		this.orderId = orderId;
 		this.userId = userId;
 		this.price = price;
@@ -25,7 +25,7 @@ public class Order {
 	public String getUserId() {
 		return userId;
 	}
-	public float getPrice() {
+	public double getPrice() {
 		return price;
 	}
 	public Status getStatus() {
@@ -38,7 +38,7 @@ public class Order {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	public void setPrice(float price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 	public void setStatus(Status status) {
