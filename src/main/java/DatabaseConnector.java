@@ -205,7 +205,7 @@ public abstract class DatabaseConnector {
 			}	
 		}
 	}
-//asdf
+//asdfasdf
 	public static void newItem(Item item) {
 		
 		Connection con = null;
