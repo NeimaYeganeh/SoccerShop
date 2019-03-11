@@ -6,13 +6,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-public class DatabaseConnector {
+public abstract class DatabaseConnector {
+	
+	public static final String DB_ENDPOINT = "finalproject365.czbltj2ae4tp.us-west-1.rds.amazonaws.com"; 
 
 	public static Connection getConnection() {
 		
 		try {
 			String driver = "com.mysql.cj.jdbc.Driver";
-			String url = "jdbc:mysql://" + SoccerShopConstants.DB_ENDPOINT;
+			String url = "jdbc:mysql://" + DatabaseConnector.DB_ENDPOINT;
 			String username = "admin";
 			String password = "password";
 			Class.forName(driver);
@@ -122,7 +124,7 @@ public class DatabaseConnector {
 				Order order = new Order();
 				order.setUserId(rs.getString("userID"));
 				order.setOrderId(rs.getString("orderID"));
-				order.setPrice(rs.getFloat("price"));
+				order.setPrice(rs.getDouble("price"));
 				order.setStatus(Order.Status.valueOf(rs.getString("status")));
 				orders.add(order);				
 			}
@@ -143,7 +145,7 @@ public class DatabaseConnector {
 	public static void storeOrder(Order order) {
 		
 		Connection con = null;
-		PreparedStatement stmt = null;;
+		PreparedStatement stmt = null;
 		
 		try {
 			
@@ -151,7 +153,7 @@ public class DatabaseConnector {
 			String stmtString = "INSERT INTO Orders(userID, price, status) VALUES (?, ?, ?)";
 			stmt = con.prepareStatement(stmtString, Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, order.getUserId());
-			stmt.setFloat(2, order.getPrice());
+			stmt.setDouble(2, order.getPrice());
 			stmt.setString(3, order.getStatus().toString());
 			stmt.executeUpdate();
 			
@@ -171,4 +173,72 @@ public class DatabaseConnector {
 			}	
 		}
 	}
+	
+	public static int getStock(Item item) {
+		
+		Connection con = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		int stock = 0;
+		
+		try {
+
+			con = getConnection();
+			String stmtString = "SELECT stock FROM Items WHERE itemID=?";
+			stmt = con.prepareStatement(stmtString);
+			stmt.setString(1,  item.getItemId());
+			rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				stock = rs.getInt("stock");
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}	
+		}
+		return stock;
+	}
+	
+	// updates item stock in db
+	public static boolean sellItem(Item item, int unitsSold) {
+		
+		Connection con = null;
+		PreparedStatement stmt = null;
+
+		try {
+			
+			// check if able to complete order
+			if (getStock(item) < unitsSold) {
+				// not enough stock
+				return false;
+			}
+				
+			con = getConnection();
+			String stmtString = "UPDATE Items SET stock=? WHERE itemID=?";
+			stmt = con.prepareStatement(stmtString);
+			stmt.setInt(1, unitsSold);
+			stmt.setString(2,  item.getItemId());
+			stmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}	
+		}
+		// success
+		return true;
+	}
+	
 }
