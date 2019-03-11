@@ -19,7 +19,8 @@ CREATE TABLE Orders (
 	orderID INT AUTO_INCREMENT PRIMARY KEY,
     userID INT,
     price DOUBLE,
-    status ENUM("placed", "confirmed", "shipping", "shipped", "delivered", "at store"),
+    status ENUM("current", "awaiting", "processing", "failed", "shipped", "completed"),
+    isPickup BOOL,
     FOREIGN KEY (userID) REFERENCES Users (userID)
 );
 
