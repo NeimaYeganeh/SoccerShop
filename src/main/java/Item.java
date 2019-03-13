@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 
 public class Item {
 	
@@ -6,6 +7,7 @@ public class Item {
 	private double price;
 	private int stock;
 	private String description;
+	private ArrayList<ItemTag> tags;
 	
 	public Item() {
 		
@@ -26,6 +28,9 @@ public class Item {
 	public String getDescription() {
 		return this.description;
 	}
+	public ArrayList<ItemTag> getTags() {
+		return this.tags;
+	}
 	
 	public void setItemId(String itemId) {
 		this.itemId = itemId;
@@ -41,6 +46,12 @@ public class Item {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	public void setTags(ArrayList<ItemTag> tags) {
+		this.tags = tags;
+	}
+	public void addTag(ItemTag tag) {
+		this.tags.add(tag);
 	}
 	
 }

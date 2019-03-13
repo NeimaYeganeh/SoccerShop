@@ -1,14 +1,15 @@
+import java.util.ArrayList;
 
 public class User {
 	
-	// TODO
-	public static enum UserType {};
+	public static enum UserType {Customer, Employee, Admin};
 
 	private String userId;
 	private String email;
 	private String lastName;
 	private String firstName;
 	private UserType type;
+	private ArrayList<Order> orders;
 	
 	public User(String userId, String email, String lastName, String firstName, UserType type) {
 		this.userId = userId;
@@ -38,6 +39,9 @@ public class User {
 	public UserType getUserType() {
 		return type;
 	}
+	public ArrayList<Order> getOrders() {
+		return orders;
+	}
 	
 	public void setUserId(String userId) {
 		this.userId = userId;
@@ -53,6 +57,9 @@ public class User {
 	}
 	public void setUserType(UserType type) {
 		this.type = type;
+	}
+	public void setOrders(ArrayList<Order> orders) {
+		this.orders = orders;
 	}
 	
 }
