@@ -141,38 +141,6 @@ public abstract class DatabaseConnector {
 		}
 		return orders;
 	}
-	
-	public static void storeOrder(Order order) {
-		
-		Connection con = null;
-		PreparedStatement stmt = null;
-		
-		try {
-			
-			con = getConnection();
-			String stmtString = "INSERT INTO Orders(userID, price, status) VALUES (?, ?, ?)";
-			stmt = con.prepareStatement(stmtString, Statement.RETURN_GENERATED_KEYS);
-			stmt.setString(1, order.getUserId());
-			stmt.setDouble(2, order.getPrice());
-			stmt.setString(3, order.getStatus().toString());
-			stmt.executeUpdate();
-			
-			// update the Order object with the generated OrderID
-			ResultSet rs = stmt.getGeneratedKeys();
-			if (rs.next())
-				order.setOrderId(rs.getString("orderID"));
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				stmt.close();
-				con.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}	
-		}
-	}
 
 	public static void storeOrder(Order order) {
 		
@@ -205,7 +173,7 @@ public abstract class DatabaseConnector {
 			}	
 		}
 	}
-//asdfasdf
+
 	public static void newItem(Item item) {
 		
 		Connection con = null;
@@ -216,9 +184,9 @@ public abstract class DatabaseConnector {
 			con = getConnection();
 			String stmtString = "INSERT INTO Items(userID, price, status) VALUES (?, ?, ?)";
 			stmt = con.prepareStatement(stmtString, Statement.RETURN_GENERATED_KEYS);
-			stmt.setInt(1, item.getItemId());
+			stmt.setString(1, item.getItemId());
 			stmt.setString(2, item.getName());
-			stmt.setInt(3, item.getPrice());
+			stmt.setDouble(3, item.getPrice());
 			stmt.setInt(4, item.getStock());
 			stmt.setString(5, item.getDescription());
 
@@ -241,8 +209,6 @@ public abstract class DatabaseConnector {
 			}	
 		}
 	}
-
-
 	
 	public static int getStock(Item item) {
 		

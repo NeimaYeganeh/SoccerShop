@@ -1,7 +1,7 @@
 
 public class Order {
 
-	public static enum Status {};
+	public static enum Status {Current, Awaiting, Processing, Failed, Shipped, Completed};
 	
 	private String orderId;
 	private String userId;
