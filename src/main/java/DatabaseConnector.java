@@ -190,7 +190,6 @@ public abstract class DatabaseConnector {
 			stmt.setInt(4, item.getStock());
 			stmt.setString(5, item.getDescription());
 
-
 			stmt.executeUpdate();
 			
 			// update the Order object with the generated OrderID

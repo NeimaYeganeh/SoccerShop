@@ -20,17 +20,39 @@ public class SoccerShop {
 
         while (state != ShopState.Exit) {
 
-            switch (state) {
-                case Start:
-
-                case Exit:
-                    return;
-            }
-
-            System.out.println(response);
+            response = doAction(state);
+            System.out.print(response);
             input = sc.nextLine();
+            state = parseInput(input);
         }
 
+    }
+
+    public String doAction(ShopState state) {
+
+	    String response = null;
+
+        switch (state) {
+            case Start:
+                response = "yo what up: ";
+        }
+
+        return response;
+    }
+
+    public ShopState parseInput(String input) {
+	    ShopState state = null;
+
+	    try {
+	        state = ShopState.valueOf(input);
+        }
+	    catch (IllegalArgumentException iae){
+	        iae.printStackTrace();
+        }
+	    catch (Exception e) {
+	        e.printStackTrace();
+        }
+	    return state;
     }
 	
 }
