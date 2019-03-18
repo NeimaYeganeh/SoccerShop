@@ -19,9 +19,9 @@ public abstract class DatabaseConnector {
 			String password = "password";
 			Class.forName(driver);
 
-			Connection connection = DriverManager.getConnection(url, username, password);
+			Connection con = DriverManager.getConnection(url, username, password);
 
-			return connection;
+			return con;
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -182,7 +182,7 @@ public abstract class DatabaseConnector {
 		try {
 			
 			con = getConnection();
-			String stmtString = "INSERT INTO Items(userID, price, status) VALUES (?, ?, ?)";
+			String stmtString = "INSERT INTO Items(userID, name, price, stock, description) VALUES (?,?,?,?,?)";
 			stmt = con.prepareStatement(stmtString, Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, item.getItemId());
 			stmt.setString(2, item.getName());
@@ -242,16 +242,20 @@ public abstract class DatabaseConnector {
 		return stock;
 	}
 	
-	// updates item stock in db
-	public static boolean sellItem(Item item, int unitsSold) {
+	// updates item stock in db if possible
+	// returns false if not enough stock to complete transaction
+	public static boolean updateItemStock(Item item, int unitsSold) {
 		
 		Connection con = null;
 		PreparedStatement stmt = null;
+		int currentStock;
 
 		try {
 			
 			// check if able to complete order
-			if (getStock(item) < unitsSold) {
+			currentStock = getStock(item);
+
+			if (currentStock < unitsSold) {
 				// not enough stock
 				return false;
 			}
@@ -259,7 +263,7 @@ public abstract class DatabaseConnector {
 			con = getConnection();
 			String stmtString = "UPDATE Items SET stock=? WHERE itemID=?";
 			stmt = con.prepareStatement(stmtString);
-			stmt.setInt(1, unitsSold);
+			stmt.setInt(1, currentStock-unitsSold);
 			stmt.setString(2,  item.getItemId());
 			stmt.executeUpdate();
 
