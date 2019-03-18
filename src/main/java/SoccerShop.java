@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 public class SoccerShop {
 
-    public enum ShopState {Start, Exit};
+    public enum ShopState {Start, UsageError, Exit};
 
     private ShopState state;
 
@@ -18,41 +18,55 @@ public class SoccerShop {
         String input = null;
         String response = null;
 
-        while (state != ShopState.Exit) {
+        /*
+        *   main control flow of program
+        *   quits program when "Exit" command entered
+        */
+        while (true) {
 
-            response = doAction(state);
-            System.out.print(response);
-            input = sc.nextLine();
-            state = parseInput(input);
+            response = doAction(state); // executes the action, returns next prompt
+            System.out.print(response); // displays prompt
+            input = sc.nextLine();      // reads user input from command line
+            state = parseInput(input);  // converts the user input into a Case
         }
 
     }
 
-    public String doAction(ShopState state) {
+    private String doAction(ShopState state) {
 
 	    String response = null;
 
         switch (state) {
             case Start:
                 response = "yo what up: ";
-        }
 
+            case UsageError:
+                response = usageMessage();
+
+            case Exit:
+                System.exit(0);
+        }
         return response;
     }
 
-    public ShopState parseInput(String input) {
+    private ShopState parseInput(String input) {
 	    ShopState state = null;
 
 	    try {
-	        state = ShopState.valueOf(input);
+	        return ShopState.valueOf(input);
         }
 	    catch (IllegalArgumentException iae){
-	        iae.printStackTrace();
+	        state = ShopState.UsageError;
         }
 	    catch (Exception e) {
 	        e.printStackTrace();
         }
 	    return state;
+    }
+
+    private String usageMessage() {
+	    String msg = "";    // fill in with options
+        return msg;
     }
 	
 }
