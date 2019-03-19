@@ -156,3 +156,59 @@ insert into ItemTags (itemID, tagID) values(22, 2);
 insert into ItemTags (itemID, tagID) values(23, 4);
 insert into ItemTags (itemID, tagID) values(24, 21);
 insert into ItemTags (itemID, tagID) values(25, 22);
+
+
+
+/* all the tags
+ *	1. Jersey
+ *	2. Nike
+ *	3. FC Barcelona
+ *	4. New Balance
+ *	5. Adidas
+ *	6. Cleat
+ *	7. Puma
+ *	8. Kwik
+ *	9. Pugg
+ *10. Pevo
+ *11. Accessories
+ *12. Goal
+ *13. Fastener
+ *14. Bench
+ *15. equipment
+ *16. Glove
+ *17. Shin Guard
+ *18. Sock
+ *19. Sock Stopper
+ *20. Ball
+ *21. Under Armour
+ *22. Senda
+ **/
+ 
+/*select tag n
+ * where n is the tagid */
+update Tags 
+set isSelected =1
+where tagID = 2;
+
+update Tags 
+set isSelected =1
+where tagID = 6;
+
+
+/* search n selectd*/
+/* where n is equal to the number of unique selected tags 
+ * in this case it is 2 seen in the last select statment
+ */
+create view selectedtags as
+select i.itemID, i.name, i.price, i.stock, i.description, t.tagID
+from Items i, ItemTags it, Tags t
+where i.itemID = it. itemID and t.tagID = it. tagID and t.isSelected = 1;
+
+create view numtags as
+select itemID, count(tagID) as  numtags
+from selectedtags
+group by itemID;
+
+select distinct s.itemID, s.name, s.price, s.stock, s.description
+from selectedtags s, numtags n
+where n.numtags = 2 and n.itemID = s.itemID;
