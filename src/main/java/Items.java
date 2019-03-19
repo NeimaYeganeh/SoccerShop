@@ -20,14 +20,18 @@ public class Items {
             System.exit(1);
         }
         
-        try {    
+        try {
+            ResultSet rs;
+            int totalTags = 0;
             Statement statement = connect.createStatement();
-            statement.executeUpdate(
-                    "CREATE VIEW TotalTags AS\n" +
+            rs = statement.executeQuery(
                     "SELECT COUNT(*) AS totalTags\n" + 
                     "FROM Tags T\n" +
                     "WHERE T.isSelected=true;\n"
             );
+            while (rs.next()) {
+                totalTags = rs.getInt("totalTags");
+            }
             statement.executeUpdate(
                     "CREATE VIEW SelectedTags AS\n" +
                     "SELECT I.itemID, I.name, I.price, I.stock, I.description, T.tagID\n" + 
@@ -40,12 +44,20 @@ public class Items {
                     "FROM SelectedTags S\n" +
                     "GROUP BY S.itemID;\n"
             );
-            ResultSet rs = statement.executeQuery(
-                    "SELECT DISTINCT S.itemID, S.name, S.price, S.stock, S.description\n" + 
-                    "FROM SelectedTags S, NumTags N, TotalTags T\n" +
-                    "WHERE N.numTags=T.totalTags AND N.itemID=S.itemID \n" +
-                    sortMethod + ";\n"
-            );
+            if (totalTags > 0) {
+                rs = statement.executeQuery(
+                        "SELECT DISTINCT S.itemID, S.name, S.price, S.stock, S.description\n" + 
+                        "FROM SelectedTags S, NumTags N\n" +
+                        "WHERE N.numTags=" + totalTags + " AND N.itemID=S.itemID \n" +
+                        sortMethod + ";\n"
+                );
+            } else {
+                rs = statement.executeQuery(
+                        "SELECT DISTINCT S.itemID, S.name, S.price, S.stock, S.description\n" + 
+                        "FROM Items S\n" +
+                        sortMethod + ";\n"
+                );
+            }
             while (rs.next()) {
                 String itemID = rs.getString("itemID");
                 String name = rs.getString("name");
@@ -57,9 +69,6 @@ public class Items {
                         + "\t" + stock
                 );
             }
-            statement.executeUpdate(
-                    "DROP VIEW TotalTags;\n"
-            );
             statement.executeUpdate(
                     "DROP VIEW SelectedTags;\n"
             );
