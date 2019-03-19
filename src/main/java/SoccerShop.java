@@ -52,6 +52,7 @@ public class SoccerShop {
                 break;
 
             case CART:
+                ShoppingCart cart = ShoppingCart.getCart();
                 break;
 
             case STORE:
@@ -97,5 +98,4 @@ public class SoccerShop {
     private void welcomeMessage() {
 	    System.out.println("Welcome to SoccerShop!");
     }
-	
 }
