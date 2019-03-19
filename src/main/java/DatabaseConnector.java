@@ -106,7 +106,7 @@ public abstract class DatabaseConnector {
 	
 	public static ArrayList<Order> getOrders(String userId) {
 		
-		ArrayList<Order> orders = new ArrayList<>();
+		ArrayList<Order> orders = new ArrayList<Order>();
 		Connection con = null;
 		PreparedStatement stmt = null;;
 		ResultSet rs = null;
@@ -240,5 +240,205 @@ public abstract class DatabaseConnector {
 		// success
 		return true;
 	}
+        public static ArrayList<User> getAllUsers() {
+		
+		ArrayList<User> users = new ArrayList<User>();
+		Connection con = null;
+		PreparedStatement stmt = null;;
+		ResultSet rs = null;
+		
+		try {
+			
+			con = getConnection();
+			String stmtString = "SELECT * FROM Users";
+			stmt = con.prepareStatement(stmtString);
+			rs = stmt.executeQuery();
+		
+			while (rs.next()) {
+				
+				User user = new User();
+				user.setUserId(rs.getString("userID"));
+				user.setEmail(rs.getString("email"));
+				user.setLastName(rs.getString("lastName"));
+				user.setFirstName(rs.getString("firstName"));
+                                User.UserType type = User.UserType.valueOf(rs.getString("type"));
+                                user.setUserType(type);
+                                users.add(user);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}	
+		}
+		return users;
+	}
+        //Get all items (sortMethod)
+        public static ArrayList<Item> getAllItems() {
+		
+		ArrayList<Item> items = new ArrayList<Item>();
+		Connection con = null;
+		PreparedStatement stmt = null;;
+		ResultSet rs = null;
+		
+		try {
+			
+			con = getConnection();
+			String stmtString = "SELECT * FROM Items";
+			stmt = con.prepareStatement(stmtString);
+			rs = stmt.executeQuery();
+		
+			while (rs.next()) {
+				
+				Item item = new Item();
+				item.setItemId(rs.getString("itemID"));
+				item.setName(rs.getString("name"));
+				item.setPrice(rs.getDouble("Price"));
+				item.setStock(rs.getInt("stock"));
+                                item.setDescription(rs.getString("description"));
+                                items.add(item);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}	
+		}
+		return items;
+	}
+        
+        //Get all items depending on which tags are marked as selected
+        public static ArrayList<Item> getAllTaggedItems() {
+		
+		ArrayList<Item> items = new ArrayList<Item>();
+		Connection con = null;
+		PreparedStatement stmt = null;;
+		ResultSet rs = null;
+		
+		try {
+			
+			con = getConnection();
+			String stmtString = "SELECT *\n" +
+                                            "  FROM ItemTags\n" +
+                                            "  JOIN tags As t ON ItemTags.tagId = tags.tagId\n" +
+                                            "  JOIN Items As i ON i.id = t.itemID\n" +
+                                            "  WHERE tags.isSelected = true;";
+			stmt = con.prepareStatement(stmtString);
+			rs = stmt.executeQuery();
+		
+			while (rs.next()) {
+				
+				Item item = new Item();
+				item.setItemId(rs.getString("itemID"));
+				item.setName(rs.getString("name"));
+				item.setPrice(rs.getDouble("Price"));
+				item.setStock(rs.getInt("stock"));
+                                item.setDescription(rs.getString("description"));
+                                items.add(item);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}	
+		}
+		return items;
+	}
+        //#Get item info by itemID (itemID)
+        public static Item getItemByID(int itemId) {
+		Item item = new Item();
+		Connection con = null;
+		PreparedStatement stmt = null;;
+		ResultSet rs = null;
+		
+		try {
+			
+			con = getConnection();
+			String stmtString = "select * from items i\n" +
+                                            "where i.itemID = $itemID;";
+			stmt = con.prepareStatement(stmtString);
+			rs = stmt.executeQuery();
+		
+			while (rs.next()) {
+				
+				item.setItemId(rs.getString("itemID"));
+				item.setName(rs.getString("name"));
+				item.setPrice(rs.getDouble("Price"));
+				item.setStock(rs.getInt("stock"));
+                                item.setDescription(rs.getString("description"));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}	
+		}
+		return item;
+	}
+        //#Create item
+        public static void createItem(String name, int price, int stock, String description, ArrayList<Item.Type> tags) {
+		Item item = new Item();
+		Connection con = null;
+		PreparedStatement stmt = null;;
+		ResultSet rs = null;
+		
+		try {
+			
+			con = getConnection();
+			String stmtString = "select * from items i\n" +
+                                            "where i.itemID = $itemID;";
+			stmt = con.prepareStatement(stmtString);
+			rs = stmt.executeQuery();
+		
+			while (rs.next()) {
+				
+				item.setItemId(rs.getString("itemID"));
+				item.setName(rs.getString("name"));
+				item.setPrice(rs.getDouble("Price"));
+				item.setStock(rs.getInt("stock"));
+                                item.setDescription(rs.getString("description"));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}	
+		}
+	}
+        
+        
+        
+
+       
+
+
+
+        
+
 	
 }
