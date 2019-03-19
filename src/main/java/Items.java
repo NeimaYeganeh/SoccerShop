@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.util.*;
 
 public class Items {
     static void getItems(Connection connect, int sortOption) {
@@ -107,7 +108,7 @@ public class Items {
         }
     }
     
-    static void insertItem(Connection connect, String name, double price, int stock, String description) {
+    static void insertItem(Connection connect, String name, double price, int stock, String description, List<Integer> tags) {
         try {
             Statement statement = connect.createStatement();
             statement.executeUpdate(
@@ -118,6 +119,21 @@ public class Items {
                     ", \"" + description +
                     "\");\n"
             );
+            ResultSet rs;
+            int itemID = 0;
+            rs = statement.executeQuery(
+                    "SELECT MAX(I.itemID) AS itemID\n" + 
+                    "FROM Items I;\n"
+            );
+            while (rs.next()) {
+                itemID = rs.getInt("itemID");
+            }
+            for (int tagID : tags) {
+                statement.executeUpdate(
+                        "INSERT INTO ItemTags (itemID, tagID)\n" +
+                        "VALUES (" + itemID + ", " + tagID + ");\n"
+                );
+            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
