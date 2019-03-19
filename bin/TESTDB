@@ -1,384 +1,160 @@
-insert into user
-values
-    ("Customer", "test_customer@gmail.com", "John", "Doe", );
-insert into user
-values
-    ("Employee", "test_emloyee@gmail.com", "Steve", "Jobs", );
-insert into user
-values
-    ("Admin", "test_admin@gmail.com", "Lubo", "Stanchev", );
+CREATE TABLE Items (
+	itemID INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(30),
+    price DOUBLE,
+    stock INT,
+    description VARCHAR(120)
+);
 
-
-insert into item
-values
-    (1, "Jersey", "Messi FC ", "Barcelona", 120, 99);
-insert into item
-values
-    (2, "Jersey", "Paul Pogba ", "Manchester United",145, 3);
-insert into item
-values
-    (3, "Jersey", "Christian Ronaldo", "Home Champions League Jersey",  150, 34);
-insert into item
-values
-    (4, "Jersey", "Mohammed Saleh",  "Home Jersey by New Balance", 25,  12);
-insert into item
-values
-    (5, "Jersey", "Kevin De Bruyne", "Home Jersey by Nike", 75, 19);
-insert into item
-values
-    (6, "Jersey", "Joma Cruz", "Azul Home Jersey 2019", 79, 22);
-insert into item
-values
-    (7, "Jersey", "Virgil van Dijk", "New Balance Liverpool Home Jersey 18/19", 118, 50);
-insert into item
-values
-    (8, "Jersey", "Josef Martinez", "Atlanta United Authentic Home Jersey 2019", 146, 25);
-insert into item
-values
-    (9, "Jersey", "Roberto Firmino", "New Balance Liverpool Home Jersey 18/19", 118, 33);
-insert into item
-values
-    (10, "Jersey", "Son", "Nike Tottenham Hotspur Home Jersey 18/19", 111, 55);
-insert into item
-values
-    (11, "Jersey", "Sadio Mane", "New Balance Liverpool Home Jersey 18/19", 118, 65);
-insert into item
-values
-    (12, "Jersey", "Kylian Mbappe", "Nike Paris Saint-Germain Home Jersey 18/19", 122, 15);
-insert into item
-values
-    (13, "Jersey", "Hirving Lozano", "adidas Mexico Home Jersey 2018", 79, 69);
-insert into item
-values
-    (14, "Jersey", "James Rodríguez", "adidas Colombia Home Jersey 2018", 69, 79);
-insert into item
-values
-    (15, "Jersey", "Cavani Uruguay", "PUMA Edinson Home Jersey 2018", 90, 79);
-insert into item
-values
-    (16, "Jersey", "Carlos Vela", "adidas Mexico Home Jersey 2018", 69, 88);
-insert into item
-values
-    (17, "Jersey", "Thomas Muller", "adidas Germany Home Jersey 2018", 90, 33);
-insert into item
-values
-    (18, "Jersey", "Suarez Uruguay", "PUMA Luis Home Jersey 2018", 90, 63);
-insert into item
-values
-    (19, "Jersey", "Diego Maradona", "adidas Argentina Home Jersey 2018", 79, 50);
-insert into item
-values
-    (20, "Jersey", "Christian Pulisic", "PUMA Borussia Dortmund Youth Home Jersey 18/19", 54, 40);
-
-insert into item
-values
-    (21, "Shoes", "Adidas Copa   ", "NETFIT upper works ", 150, 23);
-insert into item
-values
-    (22, "Shoes", "Nike Phantom", "Made to strike fear in the hearts of defenders",195, 3);
-insert into item
-values
-    (23, "Shoes", "Puma Future", "A 360-degree Flyknit upper",  120, 31);
-insert into item
-values
-    (24, "Shoes", "Mohammed Saleh",  "Built for speed on any court.", 125,  11);
-insert into item
-values
-    (25, "Shoes", "Kevin De Bruyne", "Lightweight podular plates in the heel", 175, 15);
-insert into item
-values
-    (26, "Shoes", "adidas Predator", "Accelerator FG ZZ Soccer Cleats", 175, 15);
-insert into item
-values
-    (27, "Shoes", "Nike Mercurial", "Vapor XII Elite NJR FG Soccer Cleat ", 274, 20);
-    insert into item
-values
-    (28, "Shoes", "Nike Phantom Vision", "Elite DF FG Firm Ground Soccer Cleat", 175, 15);
-insert into item
-values
-    (29, "Shoes", "adidas X 18+", "Purespeed FG Soccer Cleats", 274, 20);
-insert into item
-values
-    (30, "Shoes", "Nike Tiempo", "Legend VII Elite FG Soccer Cleat", 229, 30);
-insert into item
-values
-    (31, "Shoes", "adidas Nemeziz 18.1", "FG Soccer Cleats", 139, 30);
-insert into item
-values
-    (32, "Shoes", "Nike Hypervenom Phantom", "III Elite DF FG Soccer Cleat", 179, 15);
-insert into item
-values
-    (33, "Shoes", "Nike Phantom Venom", "Elite FG Firm Ground Soccer Cleats", 249, 35);
-insert into item
-values
-    (34, "Shoes", "adidas X 18.1", "FG Soccer Cleats", 129, 25);
-insert into item
-values
-    (35, "Shoes", "adidas Women's Nemeziz", "18.1 FG Soccer Cleats", 129, 29);
-insert into item
-values
-    (36, "Shoes", "adidas Women's Predator", "19.1 FG Soccer Cleat", 129, 25);
-insert into item
-values
-    (37, "Shoes", "adidas Junior Nemeziz", "18+ FG Soccer Cleat", 99, 27);
-insert into item
-values
-    (38, "Shoes", "adidas Junior Predator", "19.1 FG Soccer Cleat", 129, 27);
-insert into item
-values
-    (39, "Shoes", "Junior Nike Tiempo", "Legend VII Elite FG Soccer Cleat", 129, 27);
-insert into item
-values
-    (40, "Shoes", "Junior Nike Phantom Venom", "Elite FG Firm Ground Soccer Cleats", 229, 27);
-
-
-insert into item
-values
-    (41, "Accessories", "Champion Equipment Cart", "This cart will open loads of space in a cluttered closet, garage or basemen", 250, 21);
-insert into item
-values
-    (42, "Accessories", "Primed 4-Pack Collapsible Training Cones", "Built to improve speed and agility during your workouts",21, 100);
-insert into item
-values
-    (43, "Accessories", "PRIMED Soccer Training Sticks and Corner Flags - 4", "A 360-degree Flyknit upper",  30, 210);
-insert into item
-values
-    (44, "Accessories", "adidas Team Mundial Backpack",  " The updated design allows you to zip away your regulation size soccer ball into the main pocket.", 90,  150);
-insert into item
-values
-    (45, "Accessories", "Kwik Goal Soccer Goal Net Fastener ", "Make sure your soccer net is securely attached to the goal with the Kwik Goal® Net Fastener. ", 20, 25);
-insert into item
-values
-    (46, "Accessories", "Freekick Man Set of 3", "Each is made of heavy-duty PVC. Spikes keep them securely in the ground. Each is 72" x 24", 159, 25);
-insert into item
-values
-    (47, "Accessories", "Pugg Pop-up Goals 6", "great for small-sided training or backyard fun. A set of two goals when folded into a carry bag is only 2", 99, 15);
-insert into item
-values
-    (48, "Accessories", "Pugg Pop-up Goals 4", "great for small-sided training or backyard fun. A set of two goals when folded into a carry bag is only 2", 69, 18);
-insert into item
-values
-    (49, "Accessories", "Kwik Goal Wet Striper", "Stripes a 2"-4" lines. Features a steel frame with four 8" wheels.", 204, 35);
-insert into item
-values
-    (50, "Accessories", "Goal Sporting Goods Field Marking Machine", "Heavy-duty all metal construction. 10" wheels on a wide wheelbase for a smoothride", 184, 15);
-insert into item
-values
-    (51, "Accessories", "Kwik Goal Nylon Pegs", "6'' nylon pegs", 12, 25);
-insert into item
-values
-    (52, "Accessories", "Kwik Goal Net Pegs", "Set of 8, 10quot; steel pegs", 19, 14);
-insert into item
-values
-    (53, "Accessories", "Pevo StayNet Fasteners", "Bag of 100 clips.", 79, 25);
-insert into item
-values
-    (54, "Accessories", "Kwik Goal Net Carry Bag", "Carries one pair of nets and accessories.", 59, 13);
-insert into item
-values
-    (55, "Accessories", "Insta-Bench Six-Seater", "Perfect for team travel!", 99, 22);
-insert into item
-values
-    (56, "Accessories", "Big Red Barcelona Cart", "The Barcelona Soccer Ball and Soccer Equipment Cage/Cart holds up to 45 size 5 soccer balls.", 439, 10);
-insert into item
-values
-    (57, "Accessories", "Kwik Goal Evolution® Flags", "Set of four fluorescent checkered nylon flags", 139, 15);
-insert into item
-values
-    (58, "Accessories", "Pevo Covered Aluminum Bench 21'", "A sideline essential", 2099, 9);
-insert into item
-values
-    (59, "Accessories", "Kwik Goal 6' Bench w/ Back", "10" wide aluminum bench", 494, 15);
-insert into item
-values
-    (60, "Accessories", "Kwik Goal 6' Bench", "10" wide aluminum bench", 314, 15);
+CREATE TABLE Tags (
+	tagID INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(30),
+    isSelected BOOL
+);
+CREATE TABLE ItemTags (
+	itemID INT,
+    tagID INT,
+    PRIMARY KEY (itemID, tagID),
+    FOREIGN KEY (itemID) REFERENCES Items (itemID),
+    FOREIGN KEY (tagID) REFERENCES Tags (tagID)
+);
 
 
 
+/*jersy*/
+
+insert into Items (name, price, stock, description) values("Messi Jersey", 120, 99, "Messi FC Barcelona Jersey"); /*1*/
+insert into Items (name, price, stock, description) values("Paul Pogba Jersey", 145, 3, "Paul Pogba Manchester United Jersey"); /*2*/
+insert into Items (name, price, stock, description) values("Christian Ronaldo Jersey", 150, 34, "Christian Ronaldo Home Champions League Jersey"); /*3*/
+insert into Items (name, price, stock, description) values("Mohammed Saleh Jersey", 25, 12, "Mohammed Saleh Home Jersey by New Balance"); /*4*/
+insert into Items (name, price, stock, description) values("Kevin De Bruyne Jersey", 75, 19, "Kevin De Bruyne Home Jersey by Nike");/*5*/
+
+/*jersy tags*/
+insert into Tags (name, isSelected) values("Jersey", 0); /*1*/
+insert into Tags (name, isSelected) values("Nike", 0);  /*2*/
+insert into Tags (name, isSelected) values("FC Barcelona", 0); /*3*/
+insert into Tags (name, isSelected) values("New Balance", 0); /*4*/
+
+/*jersy ItemTags*/
+insert into ItemTags (itemID, tagID) values(1, 1);
+insert into ItemTags (itemID, tagID) values(2, 1);
+insert into ItemTags (itemID, tagID) values(3, 1);
+insert into ItemTags (itemID, tagID) values(4, 1);
+insert into ItemTags (itemID, tagID) values(5, 1);
+insert into ItemTags (itemID, tagID) values(5, 2);
+insert into ItemTags (itemID, tagID) values(1, 3);
+insert into ItemTags (itemID, tagID) values(4, 4);
+
+
+/*shoes*/
+insert into Items (name, price, stock, description) values("Adidas Nemeziz 18.1", 139, 30, "adidas Nemeziz 18.1 FG Soccer Cleats"); /*6*/
+insert into Items (name, price, stock, description) values("Nike Hypervenom Phantom III", 179, 15, "Nike Hypervenom Phantom III Elite DF FG Soccer Cleat"); /*7*/
+insert into Items (name, price, stock, description) values("Puma Future", 120, 31, "Puma Future a 360-degree Flyknit upper"); /*8*/
+insert into Items (name, price, stock, description) values("Nike Tiempo", 229, 30, "Nike Tiempo Legend VII Elite FG Soccer Cleat"); /*9*/
+insert into Items (name, price, stock, description) values("Adidas Predator", 175, 15, "Adidas Predator Accelerator FG ZZ Soccer Cleats"); /*10*/
+
+/*shoe tags*/
+insert into Tags (name, isSelected) values("Adidas", 0);  /*5*/
+insert into Tags (name, isSelected) values("Cleat", 0); /*6*/
+insert into Tags (name, isSelected) values("Puma", 0); /*7*/
+
+/*jersy ItemTags*/
+insert into ItemTags (itemID, tagID) values(6, 6);
+insert into ItemTags (itemID, tagID) values(7, 6);
+insert into ItemTags (itemID, tagID) values(8, 6);
+insert into ItemTags (itemID, tagID) values(9, 6);
+insert into ItemTags (itemID, tagID) values(10, 6);
+insert into ItemTags (itemID, tagID) values(6, 5);
+insert into ItemTags (itemID, tagID) values(10, 5);
+insert into ItemTags (itemID, tagID) values(7, 2);
+insert into ItemTags (itemID, tagID) values(9, 2);
+insert into ItemTags (itemID, tagID) values(8, 7);
 
 
 
+/*Accessories*/
+insert into Items (name, price, stock, description) values("Kwik Goal Net Fastener", 20, 25, "Kwik Goal Net Fastener Make sure your soccer net is securely attached to the goal with the Kwik Goal® Net Fastener."); /*11*/
+insert into Items (name, price, stock, description) values("Freekick Man Set of 3", 159, 25, "Freekick Man Set of 3 Each is made of heavy-duty PVC. Spikes keep them securely in the ground. Each is 72"); /*12*/
+insert into Items (name, price, stock, description) values("Pugg Pop-up Goals 4in", 69, 18, "Pugg Pop-up Goals 4in great for small-sided training or backyard fun."); /*13*/
+insert into Items (name, price, stock, description) values("Kwik Goal 6' Bench w/ Back", 494, 30, "Kwik Goal 6' Bench w/ Back 10in wide aluminum bench"); /*14*/
+insert into Items (name, price, stock, description) values("Pevo StayNet Fasteners", 79, 25, "Pevo StayNet Fasteners Bag of 100 clips."); /*15*/
 
-insert into item
-values
-    (61, "Equipment", "Nike HyperWarm Academy Soccer Gloves ", "Textured palms help you grip the ball during throw-ins, while the flexible cuffs offer a secure fit.", 15, 990);
-insert into item
-values
-    (62, "Equipment", "Copper Fit Copper Infused Calf Sleeves", "Designed with copper infused fabric ",21, 7);
-insert into item
-values
-    (63, "Equipment", "Shock Doctor Reflective Compression Calf Sleeves", "Protect your skin from abrasions while keeping your calf muscles warm and active with the Shock Doctor® Reflective Compression Calf Sleeves.",  55, 1);
-insert into item
-values
-    (64, "Equipment", "Sof Sole Fit Neutral Arch Insole",  " This high-tech insole is made with a medium density material and neutral arch height to promote the natural range", 23,  0);
-insert into item
-values
-    (65, "Equipment", "DSG Youth Soccer Shin Socks ", "Watch as your little one tacks on another goal for their squad as they remain confident and protected wearing the DSG® Youth Soccer Shin Socks.", 1, 25);
-insert into item
-values
-    (66, "Equipment", "G-Form Pro-S Elite Soccer Soccer Shin Guards", "Revolutionary shin guard that offers unparalleled protection.", 39, 23);
-insert into item
-values
-    (67, "Equipment", "Nike NJR Mercurial Lite Soccer Shin Guards", "The Mercurial Lite Shin Guard offers low-profile reliable protection.", 24, 33);
-insert into item
-values
-    (68, "Equipment", "Nike Mercurial Lite Shin Guard", "The Mercurial Lite Shin Guard offers low-profile reliable protection", 21, 23);
-insert into item
-values
-    (69, "Equipment", "Nike J Guard Red", "Nike J Guard Red", 9, 13);
-insert into item
-values
-    (70, "Equipment", "adidas X Foil Shin Guards", "Lightweight, low-profile compression sleeve Soccer Shin Guards", 59, 26);
-insert into item
-values
-    (71, "Equipment", "Nike J Guard Blue", "This is the guard of choice for elite players.", 9, 21);
-insert into item
-values
-    (72, "Equipment", "adidas X Lesto Shin Guards", "Lightweight, low-profile shin guards", 9, 14);
-insert into item
-values
-    (73, "Equipment", "Nike Youth Charge Shin Guards", "Step onto the field with an extra layer of protection", 11, 19);
-insert into item
-values
-    (74, "Equipment", "PUMA Sock Stoppers", "Keep your socks and shin guards in place.", 3, 23);
-insert into item
-values
-    (75, "Equipment", "PUMA One 17.1 Soccer Shin Guards", "The PUMA ONE 17.1 Shin Guard", 24, 10);
-insert into item
-values
-    (76, "Equipment", "adidas X Pro Soccer Shin Guards", "Built for flexibility and speed", 17, 13);
-insert into item
-values
-    (77, "Equipment", "Nike Mercurial Lite Paris Saint Germain Guards", "offers low-profile reliable protection", 17, 21);
-insert into item
-values
-    (78, "Equipment", "Mystery Soccer Shin Guards", "Shin Guards for a fraction of the price.", 4, 20);
-insert into item
-values
-    (79, "Equipment", "Nike Youth Shin Guard Socks", "Nike Youth Soccer Shin Socks", 9, 8 );
-insert into item
-values
-    (80, "Equipment", "FC Barcelona Mercurial Lite Soccer Shin Guards", "offers low-profile reliable protection", 17, 15);
+/*Accessories tags*/
+insert into Tags (name, isSelected) values("Kwik", 0); /*8*/
+insert into Tags (name, isSelected) values("Pugg", 0); /*9*/
+insert into Tags (name, isSelected) values("Pevo", 0); /*10*/
+insert into Tags (name, isSelected) values("Accessories", 0); /*11*/
+insert into Tags (name, isSelected) values("Goal", 0); /*12*/
+insert into Tags (name, isSelected) values("Fastener", 0); /*13*/
+insert into Tags (name, isSelected) values("Bench", 0); /*14*/
+
+/*Accessories ItemTags*/
+insert into ItemTags (itemID, tagID) values(11, 11);
+insert into ItemTags (itemID, tagID) values(12, 11);
+insert into ItemTags (itemID, tagID) values(13, 11);
+insert into ItemTags (itemID, tagID) values(14, 11);
+insert into ItemTags (itemID, tagID) values(15, 11);
+insert into ItemTags (itemID, tagID) values(11, 8);
+insert into ItemTags (itemID, tagID) values(11, 13);
+insert into ItemTags (itemID, tagID) values(13, 9);
+insert into ItemTags (itemID, tagID) values(13, 12);
+insert into ItemTags (itemID, tagID) values(14, 8);
+insert into ItemTags (itemID, tagID) values(14, 14);
+insert into ItemTags (itemID, tagID) values(15, 10);
+insert into ItemTags (itemID, tagID) values(15, 13);
 
 
+/*Equipment*/
+insert into Items (name, price, stock, description) values("Nike HyperWarm Gloves", 120, 15, "Nike HyperWarm Gloves  palms help you grip the ball during throw-ins, while the flexible cuffs offer a secure fit."); /*16*/
+insert into Items (name, price, stock, description) values("Adidas X Lesto Shin Guards", 9, 14, "adidas X Lesto Shin Guards Lightweight, low-profile shin guards"); /*17*/
+insert into Items (name, price, stock, description) values("Puma Sock Stoppers", 3, 23, "Puma Sock Stoppers Keep your socks and shin guards in place."); /*18*/
+insert into Items (name, price, stock, description) values("Nike Youth Shin Guard Socks", 9, 8, "Nike Youth Soccer Shin Socks"); /*19*/
+insert into Items (name, price, stock, description) values("Adidas X Pro Shin Guards", 17, 23, "adidas X Pro Soccer Shin Guards Built for flexibility and speed"); /*20*/
 
-insert into item
-values
-    (81, "Ball", "Nike Strike Team Soccer Ball", "Made to stand out. Bring some flair to your practice with the Nike Strike Team Ball.", 14, 20);
-insert into item
-values
-    (82, "Ball", "Nike Pitch Team Soccer Ball - 24 Pack", "32 panels of machine-stitched TPU increases touch and durability. 
-", 329, 50);
-insert into item
-values
-    (83, "Ball", "Christie Rampone Signed Red Team USA Supporter Soccer Ball", "Rampone made her last appearance for the National Team during the 2015 Women's World Cup final", 169, 19);
-insert into item
-values
-    (84, "Ball", "Nike Strike Premier League Soccer Ball", "The Nike Strike Soccer Ball is designed for a consistent feel and easy visual tracking.", 29, 5);
-insert into item
-values
-    (85, "Ball", "adidas Finale Madrid Official Match Soccer Ball", "This is the official final match ball of the 2018/19 UEFA Champions League Knockout Rounds, including the final set for Madrid on June 1.", 164, 10);
-insert into item
-values
-    (86, "Ball", "adidas Finale Madrid Top Training Soccer Ball", "Train with the best with the adidas Finale Madrid Top Training Soccer Ball.", 39, 13);
-insert into item
-values
-    (87, "Ball", "Nike NFHS Magia II Team Ball", "Aerowtrac grooves and a micro-textured casing for true flight", 59, 22);
-insert into item
-values
-    (88, "Ball", "Nike Merlin Hi-Vis Premier League", "Nike's new replacement of the beloved Nike Ordem", 159, 13);
-insert into item
-values
-    (89, "Ball", "adidas MLS 2019 Top Capitano", "Top training ball designed to honor the official match ball of Major League Soccer.", 29, 30);
-insert into item
-values
-    (90, "Ball", "Senda Valor Match DuoTech NFHS", "All Senda soccer balls are Fair Trade Certified", 39, 29);
-insert into item
-values
-    (91, "Ball", "Senda Amador Club", "High-Quality and Polyvinyl Chloride (PVC)", 21, 10);
-insert into item
-values
-    (92, "Ball", "Vintage Ball", "this ball pays tribute to balls of yesteryear", 7, 30);
-insert into item
-values
-    (93, "Ball", "New Balance Furon Dispatch Team", "The New Balance Furon ball delivers consistent performance with accuracy and power.", 21, 16);
-insert into item
-values
-    (94, "Ball", "Nike Chelsea Prestige", "A great collectible ball designed for the fan", 12, 10);
-insert into item
-values
-    (95, "Ball", "Nike CFC Strike", "designed for a consistent feel and easy visual tracking", 19, 18);
-insert into item
-values
-    (96, "Ball", "Under Armour Desafio 595 Match Play", "Foam layer backing for softness", 49, 13);
-insert into item
-values
-    (97, "Ball", "Nike Barcelona Supporters", "A fun collectible for the FCB fan", 14, 11);
-insert into item
-values
-    (98, "Ball", "adidas Tango Street Capitano", "BLADDER: Butyl", 19, 10);
-insert into item
-values
-    (99, "Ball", "adidas Finale 18 Capitano", "Great training ball with an eye-catching inverted design.", 14, 19);
-insert into item
-values
-    (100, "Ball", "Brine King Neptune", "Supersoft, machine-stitched", 19, 22);
+/*Equipment tags*/
+insert into Tags (name, isSelected) values("equipment", 0); /*15*/
+insert into Tags (name, isSelected) values("Glove", 0); /*16*/
+insert into Tags (name, isSelected) values("Shin Guard", 0); /*17*/
+insert into Tags (name, isSelected) values("Sock", 0); /*18*/
+insert into Tags (name, isSelected) values("Sock Stopper", 0); /*19*/
 
+/*Equipment ItemTags*/
+insert into ItemTags (itemID, tagID) values(16, 15);
+insert into ItemTags (itemID, tagID) values(17, 15);
+insert into ItemTags (itemID, tagID) values(18, 15);
+insert into ItemTags (itemID, tagID) values(19, 15);
+insert into ItemTags (itemID, tagID) values(20, 15);
+insert into ItemTags (itemID, tagID) values(16, 16);
+insert into ItemTags (itemID, tagID) values(16, 2);
+insert into ItemTags (itemID, tagID) values(17, 17);
+insert into ItemTags (itemID, tagID) values(17, 5);
+insert into ItemTags (itemID, tagID) values(18, 7);
+insert into ItemTags (itemID, tagID) values(18, 19);
+insert into ItemTags (itemID, tagID) values(19, 2);
+insert into ItemTags (itemID, tagID) values(19, 17);
+insert into ItemTags (itemID, tagID) values(20, 5);
+insert into ItemTags (itemID, tagID) values(20, 17);
 
+/*Ball*/
+insert into Items (name, price, stock, description) values("Nike Strike Team Soccer Ball", 14, 25, "Nike Strike Team Soccer Ball Made to stand out. Bring some flair to your practice with the Nike Strike Team Ball."); /*21*/
+insert into Items (name, price, stock, description) values("Nike Merlin Hi-Vis Premier", 159, 13, "Nike's new replacement of the beloved Nike Ordem"); /*22*/
+insert into Items (name, price, stock, description) values("New Balance Furon Dispatch", 21, 16, "The New Balance Furon ball delivers consistent performance with accuracy and power."); /*23*/
+insert into Items (name, price, stock, description) values("Under Armour Desafio 595", 49, 13, "Under Armour Desafio 595 Foam layer backing for softness"); /*24*/
+insert into Items (name, price, stock, description) values("Senda Amador Club", 21, 10, "Senda Amador Club High-Quality and Polyvinyl Chloride (PVC)"); /*25*/
 
+/*Ball tags*/
+insert into Tags (name, isSelected) values("Ball", 0); /*20*/
+insert into Tags (name, isSelected) values("Under Armour", 0); /*21*/
+insert into Tags (name, isSelected) values("Senda", 0); /*22*/
 
-insert into category
-values
-    (1, "Jerseys");
-insert into category
-values
-    (2, "Shoes");
-insert into category
-values
-    (3, "Accessories");
-insert into category
-values  
-    (4, "Balls");
-insert into category
-values
-    (5, "Equipment");
-
-
-
-
-
-
-
-insert into dev.item_categories_category
-values
-    (1, 1);
-insert into dev.item_categories_category
-values
-    (1, 4);
-insert into dev.item_categories_category
-values
-    (2, 2);
-insert into dev.item_categories_category
-values
-    (3, 3);
-insert into dev.item_categories_category
-values
-    (4, 2);
-insert into dev.item_categories_category
-values
-    (4, 3);
-insert into dev.item_categories_category
-values
-    (5, 2);
-insert into dev.item_categories_category
-values
-    (6, 3);
-insert into dev.item_categories_category
-values
-    (7, 4);
-insert into dev.item_categories_category
-values
-    (8, 3);
-insert into dev.item_categories_category
-values
-    (8, 5);
+/*Ball ItemTags*/
+insert into ItemTags (itemID, tagID) values(21, 20);
+insert into ItemTags (itemID, tagID) values(22, 20);
+insert into ItemTags (itemID, tagID) values(23, 20);
+insert into ItemTags (itemID, tagID) values(24, 20);
+insert into ItemTags (itemID, tagID) values(25, 20);
+insert into ItemTags (itemID, tagID) values(21, 2);
+insert into ItemTags (itemID, tagID) values(22, 2);
+insert into ItemTags (itemID, tagID) values(23, 4);
+insert into ItemTags (itemID, tagID) values(24, 21);
+insert into ItemTags (itemID, tagID) values(25, 22);
