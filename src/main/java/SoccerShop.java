@@ -1,4 +1,3 @@
-import java.io.InputStreamReader;
 import java.util.Scanner;
 
 public class SoccerShop {
@@ -16,7 +15,7 @@ public class SoccerShop {
     // Main UI for the SoccerShop
     public void launchCLI() {
 
-        Scanner sc = new Scanner(new InputStreamReader(System.in));
+        Scanner sc = new Scanner(System.in);
         String input = null;
         String response = null;
 
@@ -42,22 +41,31 @@ public class SoccerShop {
             case START:
                 welcomeMessage();
                 response = usageMessage();
+                break;
 
             case USAGEMESSAGE:
                 response = usageMessage();
+                break;
 
             case EXIT:
                 System.exit(0);
+                break;
 
             case CART:
+                break;
 
             case STORE:
+                break;
 
             case LOGIN:
+                break;
 
             case VIEWITEMS:
+                break;
 
             case DONE:
+                break;
+
         }
         return response;
     }
@@ -82,12 +90,12 @@ public class SoccerShop {
     }
 
     private String usageMessage() {
-	    String msg = "";    // fill in with options
+	    String msg = "These are your options:.... (REPLACE THIS): ";    // fill in with options
         return msg;
     }
 
     private void welcomeMessage() {
-	    System.out.println("Welcome to the SoccerShop!");
+	    System.out.println("Welcome to SoccerShop!");
     }
 	
 }
