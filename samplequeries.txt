@@ -1,0 +1,96 @@
+	
+    
+##Items
+#Get all items (sortMethod)
+	select * from items;
+#Get all items depending on which tags are marked as selected
+SELECT *
+  FROM ItemTags
+  JOIN tags As t ON ItemTags.tagId = tags.tagId
+  JOIN Items As i ON i.id = t.itemID
+WHERE tags.isSelected = true;
+
+#Sort by sortMethod
+#Get item info by itemID (itemID)
+	select * from items i
+	where i.itemID = $itemID;
+#Display description as well
+#Create item (name, price, stock, description, list of tags)
+	insert into Items (name, price, stock, description)
+	values
+	("test_emp@gmail.com", 1, 2, "nice item");
+#For every tag, create ItemTag as well
+
+#Change item stock (itemID, newStock)
+	UPDATE Items i
+	SET i.stock = $newStock
+	WHERE i.id = $itemID;
+#Delete item (itemID)
+	delete from items
+	where
+	itemID = $itemID;
+
+    
+    
+    
+    
+    
+    
+    
+    #Get all users
+select * from users;
+
+	#get all employees
+SELECT *
+FROM users u
+WHERE u.type = "employee";
+
+	#get all admins
+SELECT *
+FROM users u
+WHERE u.type = "admin";
+
+
+
+	#Add user (...)
+insert into users (email, password, firstName, lastName, type)
+values
+("test_emp@gmail.com", "hi", "John", "Doe", "employee");
+
+
+#Change user info (userID, …)
+#UPDATE users
+#SET ContactName = 'Alfred Schmidt', City= 'Frankfurt'
+#WHERE "email" = 1;
+
+
+	#Delete user(userEmail)
+	delete from users
+	where
+	email = userEmail;
+
+##Tags
+	#Get all tags
+    select * from Tags;
+	#Create tag (name)
+    insert into Tags(name, isSelected)
+	values
+	( "example",false);
+
+##Orders
+	#Get all orders
+    select * from Orders;
+	#View order by orderID (orderID)
+    select *
+	FROM Orders o
+	WHERE o.id = orderID;
+
+	#Gets specific info
+    
+	#Change order status (orderID, status)
+	UPDATE Orders o
+	SET o.status = status
+	WHERE o.id = orderId;
+
+
+

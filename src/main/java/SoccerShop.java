@@ -1,4 +1,8 @@
+
+import static DatabaseConnector.getConnection;
+import java.io.InputStreamReader;
 import java.util.Scanner;
+import java.sql.*;
 
 public class SoccerShop {
 
@@ -23,6 +27,7 @@ public class SoccerShop {
         *   main control flow of program
         *   quits program when "Exit" command entered
         */
+        
         while (true) {
 
             response = doAction(state); // executes the action
@@ -48,28 +53,79 @@ public class SoccerShop {
                 break;
 
             case EXIT:
+                response = usageMessage();
+                break;
+            case USAGEMESSAGE:
+                response = usageMessage();
+                break;
+            case EXIT:
                 System.exit(0);
                 break;
-
             case CART:
                 break;
-
             case STORE:
                 break;
-
             case LOGIN:
+                login();
                 break;
-
             case VIEWITEMS:
                 break;
-
             case DONE:
+                System.exit(0);
                 break;
-
         }
         return response;
     }
 
+    
+    private ShopState login()
+    {
+        Scanner sc = new Scanner(new InputStreamReader(System.in));
+
+        Connection con = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        User.UserType type = null;
+        
+        String email = null;
+        String password = null;
+        
+        System.out.println("Please enter your username");
+        email = sc.nextLine();
+        
+        System.out.println("Please enter your password");
+        password = sc.nextLine();
+        
+        try {
+			
+                con = DatabaseConnector.getConnection();
+                String stmtString = "SELECT * FROM Users WHERE Users.email=? and Users.password=?";
+                stmt = con.prepareStatement(stmtString);
+                stmt.setString(1, email);
+                stmt.setString(2, password);
+                rs = stmt.executeQuery();
+
+                type = User.UserType.valueOf(rs.getString("type"));
+                
+        } catch (SQLException e) {
+                e.printStackTrace();
+        } finally {
+                try {
+                        stmt.close();
+                        con.close();
+                } catch (SQLException e) {
+                        e.printStackTrace();
+                }	
+        }
+        if (type.equals("Admin"))
+            return ShopState.STORE;
+        else if (type.equals("Employee"))
+            return ShopState.STORE;
+        else 
+            return ShopState.STORE;
+    }
+    
     private ShopState parseInput(String input) {
 
 	    ShopState state = null;
@@ -95,7 +151,7 @@ public class SoccerShop {
     }
 
     private void welcomeMessage() {
-	    System.out.println("Welcome to SoccerShop!");
+	    System.out.println("Welcome to the SoccerShop!");
     }
 	
 }
