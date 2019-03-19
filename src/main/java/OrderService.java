@@ -3,6 +3,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+// PROB DONT NEED SINCE WEBAPP NOT REQUIRED
 @WebServlet("/order")
 public class OrderService extends HttpServlet {
 
