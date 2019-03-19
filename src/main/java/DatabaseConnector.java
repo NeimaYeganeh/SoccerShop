@@ -18,6 +18,11 @@ public class DatabaseConnector {
             Items.getItem(connect, 3);
             Items.updateItemStock(connect, 3, 10);
             Items.getItem(connect, 3);
+            System.out.println("");
+            //Items.insertItem(connect, "Basketball", 399, 3, "Orange");
+            //Items.deleteItem(connect, 27);
+            Items.getItems(connect, 1);
+            System.out.println("");
            
         } catch (Exception e) {
             e.printStackTrace();

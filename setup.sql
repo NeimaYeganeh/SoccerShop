@@ -33,8 +33,8 @@ CREATE TABLE OrderItems (
     price FLOAT,
     quantity INT,
     PRIMARY KEY (orderID, itemID),
-    FOREIGN KEY (orderID) REFERENCES Orders (orderID),
-    FOREIGN KEY (itemID) REFERENCES Items (itemID)
+    FOREIGN KEY (orderID) REFERENCES Orders (orderID) ON DELETE CASCADE,
+    FOREIGN KEY (itemID) REFERENCES Items (itemID) ON DELETE CASCADE
 );
 
 CREATE TABLE Tags (
@@ -47,6 +47,6 @@ CREATE TABLE ItemTags (
 	itemID INT,
     tagID INT,
     PRIMARY KEY (itemID, tagID),
-    FOREIGN KEY (itemID) REFERENCES Items (itemID),
-    FOREIGN KEY (tagID) REFERENCES Tags (tagID)
+    FOREIGN KEY (itemID) REFERENCES Items (itemID) ON DELETE CASCADE,
+    FOREIGN KEY (tagID) REFERENCES Tags (tagID) ON DELETE CASCADE
 );

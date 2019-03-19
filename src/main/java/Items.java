@@ -107,20 +107,21 @@ public class Items {
         }
     }
     
-    /* Not done
     static void insertItem(Connection connect, String name, double price, int stock, String description) {
         try {
             Statement statement = connect.createStatement();
             statement.executeUpdate(
-                    "INSERT INTO Items (name, price, stock, description\n" + 
-                    "SET stock=" + stock + "\n" +
-                    "WHERE itemID=" + itemID + ";\n"
+                    "INSERT INTO Items (name, price, stock, description)\n" +
+                    "VALUES (\"" + name +
+                    "\", " + price +
+                    ", " + stock +
+                    ", \"" + description +
+                    "\");\n"
             );
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
-    */
     
     static void updateItemStock(Connection connect, int itemID, int stock) {
         try {
