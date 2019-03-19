@@ -48,7 +48,6 @@ public class ShoppingCart {
         return items;
     }
 
-    // returns True/False success of all purchases
     public void buyShoppingCart() {
 
         order = new Order();
@@ -61,6 +60,7 @@ public class ShoppingCart {
 
         // send finalized Order to database
         order.setPrice(totalPrice);
+        order.setStatus(Order.Status.Awaiting);
         DatabaseConnector.storeOrder(order);
     }
 }
