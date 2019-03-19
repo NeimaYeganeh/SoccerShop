@@ -12,7 +12,7 @@ public class DatabaseConnector {
             String password = "012912454";
             Class.forName(driver);
             connect = DriverManager.getConnection(url, username, password);
-            
+            /*
             Items.getItems(connect, 1);
             System.out.println("");
             Items.getItem(connect, 3);
@@ -23,6 +23,13 @@ public class DatabaseConnector {
             //Items.deleteItem(connect, 27);
             Items.getItems(connect, 1);
             System.out.println("");
+            */
+            Tags.getTags(connect);
+            Tags.selectTag(connect, 22);
+            Tags.getTags(connect);
+            Tags.selectTag(connect, 22);
+            Tags.getTags(connect);
+            Tags.selectTag(connect, 22);
            
         } catch (Exception e) {
             e.printStackTrace();
