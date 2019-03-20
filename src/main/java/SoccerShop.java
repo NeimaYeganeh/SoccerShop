@@ -5,7 +5,7 @@ import java.util.Scanner;
 import java.sql.*;
 
 public class SoccerShop {
-    public int[] sorttype = {1, 0, 0, 0, 0, 0}; /*ITEMIDASC*/
+    public int sorttype = 1; /*ITEMIDASC*/
     public enum ShopState {
         START, USAGEMESSAGE, EXIT, STORE, CART, DONE, LOGIN, VIEWITEMS, ITEMDETAILS, SELECTTAGS, SELECTSORT, BACK, ITEMIDASC, ITEMIDDESC, ALPHAASC, ALPHADESC, PRICEASC, PRICEDESC
     }
@@ -52,7 +52,7 @@ public class SoccerShop {
 
         switch (state) {
             case STORE:
-                ystem.out.print("Store\n");
+                System.out.print("Store\n");
                 response = storeUsageMessage();
                 System.out.print(response);
                 input = sc.nextLine(); 
@@ -64,8 +64,8 @@ public class SoccerShop {
                     state = parseInput(input);
                 }
 
-                welcomeMessage();
-                response = startUsageMessage();
+                
+                
                 break;
             case CART:
                 ShoppingCart cart = ShoppingCart.getCart();
@@ -79,10 +79,12 @@ public class SoccerShop {
                 break;
 	    case USAGEMESSAGE:
             default:
-                response = usageMessageAction();
+                usageMessageStore();
                 break;
 	    
         }
+	welcomeMessage();
+	response = startUsageMessage();
         return response;
     }
     private String storeUsageMessage() {
@@ -141,7 +143,7 @@ public class SoccerShop {
                     input = sc.nextLine(); 
                     state = parseInput(input);
                 }
-                
+                response = "tags"
                 break;
             case CLEARTAGS:
                 /*clears all tags*/
@@ -156,68 +158,39 @@ public class SoccerShop {
                     state = parseInput(input);
                     switch(state) {
                         case ITEMIDASC:
-                            sorttype[0] = 1;
-                            sorttype[1] = 0;
-                            sorttype[2] = 0;
-                            sorttype[3] = 0;
-                            sorttype[4] = 0;
-                            sorttype[5] = 0;
+                            sorttype = 1;
 
                             break;
                         case ITEMIDDESC:
-                            sorttype[0] = 0;
-                            sorttype[1] = 1;
-                            sorttype[2] = 0;
-                            sorttype[3] = 0;
-                            sorttype[4] = 0;
-                            sorttype[5] = 0;
+                            sorttype = 2;
                             break;
                         case ALPHAASC:
-                            sorttype[0] = 0;
-                            sorttype[1] = 0;
-                            sorttype[2] = 1;
-                            sorttype[3] = 0;
-                            sorttype[4] = 0;
-                            sorttype[5] = 0;
+                            sorttype = 3;
                             break;
                         case ALPHADESC:
-                            sorttype[0] = 0;
-                            sorttype[1] = 0;
-                            sorttype[2] = 0;
-                            sorttype[3] = 1;
-                            sorttype[4] = 0;
-                            sorttype[5] = 0;
+                            sorttype = 4;
                             break;
                         case PRICEASC:
-                            sorttype[0] = 0;
-                            sorttype[1] = 0;
-                            sorttype[2] = 0;
-                            sorttype[3] = 0;
-                            sorttype[4] = 1;
-                            sorttype[5] = 0;
+                            sorttype = 5;
                             break;
                         case PRICEDESC:
-                            sorttype[0] = 0;
-                            sorttype[1] = 0;
-                            sorttype[2] = 0;
-                            sorttype[3] = 0;
-                            sorttype[4] = 0;
-                            sorttype[5] = 1;
+                            sorttype = 6;
                             break;
                         case BACK:
                             done = 1;
                             break;
                         case USAGEMESSAGE:
                         default:
-                            response = usageMessageSORT();
+                            usageMessageSORT();
                             break;
                     }
+		    response =  "sort";
                 }
 
                 break;
             case ITEMDETAILS:
 
-                
+                response = "details";
                 break;
             case BACK:
                 response = "back"
