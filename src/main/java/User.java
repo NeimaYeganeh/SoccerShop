@@ -1,5 +1,6 @@
 import java.util.ArrayList;
-
+import java.sql.*;
+import java.util.*;
 public class User {
 	
 	public static enum UserType {Customer, Employee, Admin};
@@ -9,7 +10,6 @@ public class User {
 	private String lastName;
 	private String firstName;
 	private UserType type;
-	private ArrayList<Order> orders;
 	
 	public User(String userId, String email, String lastName, String firstName, UserType type) {
 		this.userId = userId;
@@ -61,5 +61,75 @@ public class User {
 	public void setOrders(ArrayList<Order> orders) {
 		this.orders = orders;
 	}
-	
+        static void getUsers(Connection connect) {
+            try {
+            ResultSet rs;
+            Statement statement = connect.createStatement();    
+            rs = statement.executeQuery(
+                        "SELECT * from User"
+                );
+            System.out.println("userID" 
+                        + "\temail"
+                        + "\tlastName"
+                        + "\tfirstName"
+                        + "\ttype\n");
+                
+            while (rs.next()) {
+                System.out.println(rs.getString("userID")
+                        + "\t" + rs.getString("email")
+                        + "\t" + rs.getString("lastName")
+                        + "\t" + rs.getString("firstName")
+                        + "\t" + rs.getString("type")
+                );
+            }
+        }
+            catch (Exception e) {
+               System.out.println(e.getMessage());
+           }
+        }
+        static void insertUser(Connection connect, String email, String password, String lastName, String firstName, UserType type) {
+        try {
+            Statement statement = connect.createStatement();
+            statement.executeUpdate(
+                    "INSERT INTO Users (email, password, lastName, firstName, type)\n" +
+                    "VALUES ( " + email + 
+                    ", " + password +
+                    ", " + lastName +
+                    ", " + firstName +
+                    ", " + type +
+                    "\");\n"
+            );
+            ResultSet rs;
+            int itemID = 0;
+            rs = statement.executeQuery(
+                    "SELECT MAX(I.itemID) AS itemID\n" + 
+                    "FROM Items I;\n"
+            );
+            while (rs.next()) {
+                itemID = rs.getInt("itemID");
+            }
+            for (int tagID : tags) {
+                statement.executeUpdate(
+                        "INSERT INTO ItemTags (itemID, tagID)\n" +
+                        "VALUES (" + itemID + ", " + tagID + ");\n"
+                );
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    
+    static void deleteUser(Connection connect, String email) {
+        try {
+            Statement statement = connect.createStatement();
+            statement.executeUpdate(
+                    "DELETE FROM Users\n" +
+                    "WHERE email=" + email + ";\n"
+            );
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    }
 }
