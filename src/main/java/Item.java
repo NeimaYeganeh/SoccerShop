@@ -8,11 +8,13 @@ public class Item {
 	private int stock;
 	private String description;
 	private ArrayList<ItemTag> tags;
-	
+	private int quantity;
+
 	public Item() {
-		
+        this.quantity = 0;
 	}
-	
+
+	public int getQuantity() {return quantity;}
 	public String getItemId() {
 		return this.itemId;
 	}
@@ -31,7 +33,8 @@ public class Item {
 	public ArrayList<ItemTag> getTags() {
 		return this.tags;
 	}
-	
+
+	public void setQuantity(int quantity) {this.quantity = quantity;}
 	public void setItemId(String itemId) {
 		this.itemId = itemId;
 	}
@@ -53,5 +56,19 @@ public class Item {
 	public void addTag(ItemTag tag) {
 		this.tags.add(tag);
 	}
-	
+
+	@Override
+	public boolean equals(Object o) {
+		Item other;
+
+		if (o == null)
+			return false;
+		if (o instanceof Item)
+			other = (Item) o;
+		else
+			return false;
+		if (itemId == other.itemId)
+		    return true;
+		return false;
+	}
 }

@@ -568,7 +568,6 @@ public abstract class DatabaseConnector {
 			while (rs.next()) {
 				
 				Order order = new Order();
-				order.setUserId(rs.getString("userID"));
 				order.setOrderId(rs.getString("orderID"));
 				order.setPrice(rs.getDouble("price"));
 				order.setStatus(Order.Status.valueOf(rs.getString("status")));
@@ -588,7 +587,8 @@ public abstract class DatabaseConnector {
 		return orders;
 	}
 
-	public static void storeOrder(Order order) {
+	// updates DB with new Order; Sets orderID field in Order
+	public static Order storeOrder(Order order) {
 		
 		Connection con = null;
 		PreparedStatement stmt = null;
@@ -596,11 +596,21 @@ public abstract class DatabaseConnector {
 		try {
 			
 			con = getConnection();
-			String stmtString = "INSERT INTO Orders(userID, price, status) VALUES (?, ?, ?)";
+
+			String colString = "price,status,lastName,firstName,email,isPickup,street,city,state,zip";
+			String stmtString = String.format("INSERT INTO Orders(%s) VALUES (?,?,?,?,?,?,?,?,?,?)", colString);
+
 			stmt = con.prepareStatement(stmtString, Statement.RETURN_GENERATED_KEYS);
-			stmt.setString(1, order.getUserId());
-			stmt.setDouble(2, order.getPrice());
-			stmt.setString(3, order.getStatus().toString());
+			stmt.setDouble(1, order.getPrice());
+			stmt.setString(2, order.getStatus().toString());
+			stmt.setString(3, order.getLastName());
+			stmt.setString(4, order.getFirstName());
+			stmt.setString(5, order.getEmail());
+            stmt.setBoolean(6, order.getPickup());
+            stmt.setString(7, order.getStreet());
+            stmt.setString(8, order.getCity());
+            stmt.setString(9, order.getState());
+            stmt.setString(10, order.getZip());
 			stmt.executeUpdate();
 			
 			// update the Order object with the generated OrderID
@@ -618,6 +628,7 @@ public abstract class DatabaseConnector {
 				e.printStackTrace();
 			}	
 		}
+		return order;
 	}
 
 	public static void newItem(Item item) {
@@ -654,7 +665,7 @@ public abstract class DatabaseConnector {
 			}	
 		}
 	}
-	
+
 	public static int getStock(Item item) {
 		
 		Connection con = null;
@@ -689,26 +700,17 @@ public abstract class DatabaseConnector {
 	
 	// updates item stock in db if possible
 	// returns false if not enough stock to complete transaction
-	public static boolean updateItemStock(Item item, int unitsSold) {
+	public static void purchaseItem(Item item) {
 		
 		Connection con = null;
 		PreparedStatement stmt = null;
-		int currentStock;
+		int quantity = item.getQuantity();
 
 		try {
-			
-			// check if able to complete order
-			currentStock = getStock(item);
-
-			if (currentStock < unitsSold) {
-				// not enough stock
-				return false;
-			}
-				
 			con = getConnection();
 			String stmtString = "UPDATE Items SET stock=? WHERE itemID=?";
 			stmt = con.prepareStatement(stmtString);
-			stmt.setInt(1, currentStock-unitsSold);
+			stmt.setInt(1, getStock(item)-quantity);
 			stmt.setString(2,  item.getItemId());
 			stmt.executeUpdate();
 
@@ -722,8 +724,6 @@ public abstract class DatabaseConnector {
 				e.printStackTrace();
 			}	
 		}
-		// success
-		return true;
 	}
 	
 }
