@@ -1,5 +1,4 @@
 
-import static DatabaseConnector.getConnection;
 import java.io.InputStreamReader;
 import java.util.Scanner;
 import java.sql.*;
@@ -132,7 +131,7 @@ public class SoccerShop {
                 while(!state.equals("BACK")){
                     /* insert tags*/
                     try {
-                        op = Integer.parseInt(input)
+                        op = Integer.parseInt(input);
                         
                     } catch (NumberFormatException e) {
                         /* ussage message*/
@@ -143,16 +142,16 @@ public class SoccerShop {
                     input = sc.nextLine(); 
                     state = parseInput(input);
                 }
-                response = "tags"
+                response = "tags";
                 break;
             case CLEARTAGS:
                 /*clears all tags*/
-                response = "clear"
+                response = "clear";
                 break;
             case SELECTSORT:
                 System.out.println("\nSelect Sort");
                 sortUsageMessage();
-                int done = 0;
+                boolean done = false;
                 while (!done) {
                     input = sc.nextLine();
                     state = parseInput(input);
@@ -177,7 +176,7 @@ public class SoccerShop {
                             sorttype = 6;
                             break;
                         case BACK:
-                            done = 1;
+                            done = true;
                             break;
                         case USAGEMESSAGE:
                         default:
@@ -193,15 +192,13 @@ public class SoccerShop {
                 response = "details";
                 break;
             case BACK:
-                response = "back"
+                response = "back";
                 break;
             case USAGEMESSAGE:
             default:
                 usageMessageStore();
 
                 break;
-
-            
         }
         return response;
     }
