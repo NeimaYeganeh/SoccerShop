@@ -15,7 +15,7 @@ public class Item {
 	private int quantity;
 
 	public Item() {
-        this.quantity = 0;
+        this.quantity = 1;
 	}
 
 	public int getQuantity() {return quantity;}
@@ -62,6 +62,12 @@ public class Item {
 	}
 
 	@Override
+    public String toString() {
+	    String itemStr = String.format("%s %s %s %s", itemId, name, price, stock);
+	    return itemStr;
+    }
+
+	@Override
 	public boolean equals(Object o) {
 		Item other;
 
@@ -89,9 +95,6 @@ public class Item {
             sortMethod = "ORDER BY S.price ASC";
         } else if (sortOption == 6) {
             sortMethod = "ORDER BY S.price DESC";
-        } else {
-            System.out.println("Invalid sort");
-            System.exit(1);
         }
 
         try {
@@ -164,7 +167,9 @@ public class Item {
                             "FROM Items I\n" +
                             "WHERE I.itemID=" + itemID + ";\n"
             );
+            boolean hasNext = false;
             while (rs.next()) {
+                hasNext = true;
                 String name = rs.getString("name");
                 String price = rs.getString("price");
                 String stock = rs.getString("stock");
@@ -176,6 +181,8 @@ public class Item {
                         + "\t" + description
                 );
             }
+            if (!hasNext)
+                System.out.println("No items found.");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

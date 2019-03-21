@@ -16,25 +16,24 @@ public class SoccerShop {
 
     private ShopState state;
 
-	public SoccerShop() {
-	    this.state = ShopState.START;
+    public SoccerShop() {
+        this.state = ShopState.START;
     }
 
     // Main UI for the SoccerShop
     public void launchCLI() {
-
         Scanner sc = new Scanner(System.in);
         String input = null;
         String response = null;
 
         /*
-        *   main control flow of program
-        *   quits program when "Exit" command entered
-        */
+         *   main control flow of program
+         *   quits program when "Exit" command entered
+         */
         welcomeMessage();
         response = startUsageMessage();
         System.out.print(response);
-        input = sc.nextLine(); 
+        input = sc.nextLine();
         state = parseInput(input);
         while (true) {
 
@@ -46,53 +45,58 @@ public class SoccerShop {
 
     }
     private String startUsageMessage() {
-        String msg = "\nOptions:\n\t1) Store\n\t2) Cart\n\t3) Login\n\t4)Exit\nWhere do you want to go?\n(select by name)\n";    // fill in with options
+        String msg = "\nOptions:\n\t1) Store\n\t2) Cart\n\t3) Login\n\t4) Exit\nWhere do you want to go?\n(select by name)\n";    // fill in with options
         return msg;
     }
     private String doAction(ShopState state) {
-	    Scanner sc = new Scanner(System.in);
-	    String response = null;
-	    String input = null;
+        Scanner sc = new Scanner(System.in);
+        String response = null;
+        String input = null;
 
         switch (state) {
             case STORE:
                 System.out.print("Store\n");
                 response = storeUsageMessage();
                 System.out.print(response);
-                input = sc.nextLine(); 
+                input = sc.nextLine();
                 state = parseInput(input);
                 while(!startStore(state).equals("back")){
                     response = storeUsageMessage();
                     System.out.print(response);
-                    input = sc.nextLine(); 
+                    input = sc.nextLine();
                     state = parseInput(input);
                 }
-
-                
-                
                 break;
             case CART:
                 ShoppingCart cart = ShoppingCart.getCart();
+                System.out.print(cart.toString());
+                System.out.print("Purchase items in cart? (Y/N): ");
+                String purchase = sc.nextLine();
+                purchase = purchase.trim().toLowerCase();
+
+                if (purchase.equals("y")) {
+                    cart.buyShoppingCart();
+                }
                 break;
             case LOGIN:
                 login();
                 break;
             case EXIT:
-		exitUsageMessage();
+                exitUsageMessage();
                 System.exit(0);
                 break;
-	    case USAGEMESSAGE:
+            case USAGEMESSAGE:
             default:
                 usageMessageStore();
                 break;
-	    
+
         }
-	welcomeMessage();
-	response = startUsageMessage();
+        welcomeMessage();
+        response = startUsageMessage();
         return response;
     }
     private String storeUsageMessage() {
-        String msg = "\nOptions:\n\t1) View items\n\t2) Select tags\n\t3) Select sort\n\t4) Item Details\n\t5)Back\nWhere do you want to go?\n(select option by name)\n";    // fill in with options
+        String msg = "\nOptions:\n\t1) View items\n\t2) Select tags\n\t3) Select sort\n\t4) Item Details\n\t5) Back\nWhere do you want to go?\n(select option by name)\n";    // fill in with options
         return msg;
     }
     private void tagUsageMessage() {
@@ -114,12 +118,20 @@ public class SoccerShop {
         String response = null;
         String input = null;
         int op = 0;
+        Connection con = DatabaseConnector.getConnection();
         switch (state) {
             case VIEWITEMS:
                 /* header with tags used*/
                 /* prints items(id, name stock, price)*/
                 /* response = viewitem (no action for while loop)*/
-                response = "viewitem";
+
+                response = "viewitems";
+                Item.getItems(con, sorttype);
+                ShoppingCart cart = ShoppingCart.getCart();
+                int itemID = getItemID();
+                Item item = DatabaseConnector.getItemByID(itemID);
+                cart.addItem(item);
+                usageMessage();
                 break;
 
             case SELECTTAGS:
@@ -127,10 +139,7 @@ public class SoccerShop {
                 /* one at a time*/
                 /* response = viewitem (no action for while loop)*/
 
-                /*todo
-                 * -print all tags (from tags table in db)*/
                 System.out.println("\nSelect Tags");
-                Connection con = DatabaseConnector.getConnection();
                 Tags.getTags(con);
                 tagUsageMessage();
                 input = sc.nextLine();
@@ -140,21 +149,19 @@ public class SoccerShop {
                     try {
                         op = Integer.parseInt(input);
                         Tags.selectTag(con, op);
-                        
+
                     } catch (NumberFormatException e) {
-                        /* ussage message*/
+                        /* usage message*/
                         usageMessageStore();
                     }
+                    if (input == "clear")
+                        Tags.clearTags(con);
                     Tags.getTags(con);
                     tagUsageMessage();
-                    input = sc.nextLine(); 
+                    input = sc.nextLine();
                     state = parseInput(input);
                 }
                 response = "tags";
-                break;
-            case CLEARTAGS:
-                /*clears all tags*/
-                response = "clear";
                 break;
             case SELECTSORT:
                 System.out.println("\nSelect Sort");
@@ -166,7 +173,6 @@ public class SoccerShop {
                     switch(state) {
                         case ITEMIDASC:
                             sorttype = 1;
-
                             break;
                         case ITEMIDDESC:
                             sorttype = 2;
@@ -191,7 +197,7 @@ public class SoccerShop {
                             usageMessageSORT();
                             break;
                     }
-		    response =  "sort";
+                    response =  "sort";
                 }
 
                 break;
@@ -210,7 +216,7 @@ public class SoccerShop {
         }
         return response;
     }
-    
+
     private ShopState login()
     {
         Scanner sc = new Scanner(new InputStreamReader(System.in));
@@ -218,68 +224,68 @@ public class SoccerShop {
         Connection con = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        
+
         User.UserType type = null;
-        
+
         String email = null;
         String password = null;
-        
+
         System.out.println("Please enter your username");
         email = sc.nextLine();
-        
+
         System.out.println("Please enter your password");
         password = sc.nextLine();
-        
-        try {
-			
-                con = DatabaseConnector.getConnection();
-                String stmtString = "SELECT * FROM Users WHERE Users.email=? and Users.password=?";
-                stmt = con.prepareStatement(stmtString);
-                stmt.setString(1, email);
-                stmt.setString(2, password);
-                rs = stmt.executeQuery();
 
-                type = User.UserType.valueOf(rs.getString("type"));
-                
+        try {
+
+            con = DatabaseConnector.getConnection();
+            String stmtString = "SELECT * FROM Users WHERE Users.email=? and Users.password=?";
+            stmt = con.prepareStatement(stmtString);
+            stmt.setString(1, email);
+            stmt.setString(2, password);
+            rs = stmt.executeQuery();
+
+            type = User.UserType.valueOf(rs.getString("type"));
+
         } catch (SQLException e) {
-                e.printStackTrace();
+            e.printStackTrace();
         } finally {
-                try {
-                        stmt.close();
-                        con.close();
-                } catch (SQLException e) {
-                        e.printStackTrace();
-                }	
+            try {
+                stmt.close();
+                con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         if (type.equals("Admin"))
             return ShopState.STORE;
         else if (type.equals("Employee"))
             return ShopState.STORE;
-        else 
+        else
             return ShopState.STORE;
     }
-    
+
     private ShopState parseInput(String input) {
 
-	    ShopState state = null;
-	    input = input.replaceAll("\\s+","");    // get rid of whitespace
+        ShopState state = null;
+        input = input.replaceAll("\\s+","");    // get rid of whitespace
         input = input.toUpperCase();    // make case-insensitive
 
-	    try {
-	        state = ShopState.valueOf(input);
+        try {
+            state = ShopState.valueOf(input);
         }
-	    catch (IllegalArgumentException iae){
-	        state = ShopState.USAGEMESSAGE;     // invalid input (no matching ShopState)
+        catch (IllegalArgumentException iae){
+            state = ShopState.USAGEMESSAGE;     // invalid input (no matching ShopState)
         }
-	    catch (Exception e) {
-	        e.printStackTrace();    // program actually crashed -- shouldn't happen
+        catch (Exception e) {
+            e.printStackTrace();    // program actually crashed -- shouldn't happen
             System.exit(1);  // exit with error code flagged
         }
-	    return state;
+        return state;
     }
 
     private String usageMessage() {
-	    String msg = "These are your options:.... (REPLACE THIS): ";    // fill in with options
+        String msg = "These are your options:.... (REPLACE THIS): ";    // fill in with options
         return msg;
     }
 
@@ -297,6 +303,15 @@ public class SoccerShop {
     }
 
     private void welcomeMessage() {
-	    System.out.println("Welcome to the SoccerShop!");
+        System.out.println("Welcome to the SoccerShop!");
+    }
+
+    public int getItemID() {
+        String input;
+
+        System.out.print("\nAdd item ID to cart: ");
+        Scanner sc = new Scanner(System.in);
+        input = sc.nextLine().trim();
+        return Integer.parseInt(input);
     }
 }
