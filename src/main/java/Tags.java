@@ -8,14 +8,16 @@ public class Tags {
                     "SELECT *\n" +
                     "FROM Tags T;\n"
             );
+            System.out.format("%-10s %-30s\n", "TagID", "Name");
             while (rs.next()) {
                 String tagID = rs.getString("tagID");
                 String name = rs.getString("name");
-                String isSelected = rs.getString("isSelected");
-                System.out.println(tagID
-                        + "\t" + name
-                        + "\t" + isSelected
-                );
+                Boolean isSelected = rs.getBoolean("isSelected");
+                String selected = "";
+                if (isSelected) {
+                    selected = "X";
+                }
+                System.out.format("%-10s %-30s %10s\n", tagID, name, selected);
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());

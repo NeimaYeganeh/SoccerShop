@@ -59,16 +59,13 @@ public class Items {
                         sortMethod + ";\n"
                 );
             }
+            System.out.format("%-10s %-30s %10s %10s\n", "ItemID", "Name", "Price", "Stock");
             while (rs.next()) {
                 String itemID = rs.getString("itemID");
                 String name = rs.getString("name");
                 String price = rs.getString("price");
                 String stock = rs.getString("stock");
-                System.out.println(itemID
-                        + "\t" + name
-                        + "\t$" + price
-                        + "\t" + stock
-                );
+                System.out.format("%-10s %-30s %10s %10s\n", itemID, name, price, stock);
             }
             statement.executeUpdate(
                     "DROP VIEW SelectedTags;\n"
