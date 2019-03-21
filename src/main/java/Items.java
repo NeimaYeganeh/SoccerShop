@@ -163,4 +163,23 @@ public class Items {
             System.out.println(e.getMessage());
         }
     }
+    
+    static Boolean hasItem(Connection connect, int itemID) {
+        try {
+            Statement statement = connect.createStatement();
+            ResultSet rs;
+            rs = statement.executeQuery(
+                    "SELECT * FROM Items\n" +
+                    "WHERE itemID=" + itemID + " AND stock>0;\n"
+            );
+            while (rs.next()) {
+                if (itemID == rs.getInt("itemID")) {
+                    return true;
+                }
+            }
+            return false;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }
