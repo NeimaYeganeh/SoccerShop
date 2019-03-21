@@ -1,12 +1,13 @@
 
-//import DatabaseConnector;
-
+import javax.xml.crypto.Data;
 import java.io.InputStreamReader;
 import java.util.Scanner;
 import java.sql.*;
 
 public class SoccerShop {
-    public int[] sorttype = {1, 0, 0, 0, 0, 0}; /*ITEMIDASC*/
+
+    public int sorttype = 1; /*ITEMIDASC*/
+
     public enum ShopState {
         START, USAGEMESSAGE, EXIT, STORE, CART, DONE, LOGIN, VIEWITEMS, ADMIN, EMPLOYEE, 
         ITEMDETAILS, SELECTTAGS, SELECTSORT, BACK, ITEMIDASC, ITEMIDDESC, ALPHAASC, ALPHADESC,
@@ -18,23 +19,24 @@ public class SoccerShop {
     
     public SoccerShop() {
    this.state = ShopState.START;
+
     }
+
 
     // Main UI for the SoccerShop
     public void launchCLI() {
-
         Scanner sc = new Scanner(System.in);
         String input = null;
         String response = null;
 
         /*
-        *   main control flow of program
-        *   quits program when "Exit" command entered
-        */
+         *   main control flow of program
+         *   quits program when "Exit" command entered
+         */
         welcomeMessage();
         response = startUsageMessage();
         System.out.print(response);
-        input = sc.nextLine(); 
+        input = sc.nextLine();
         state = parseInput(input);
         while (true) {
 
@@ -46,13 +48,14 @@ public class SoccerShop {
 
     }
     private String startUsageMessage() {
-        String msg = "\nOptions:\n\t1) Store\n\t2) Cart\n\t3) Login\n\t4)Exit\nWhere do you want to go?\n(select by name)\n";    // fill in with options
+        String msg = "\nOptions:\n\t1) Store\n\t2) Cart\n\t3) Login\n\t4) Exit\nWhere do you want to go?\n(select by name)\n";    // fill in with options
         return msg;
     }
     private String doAction(ShopState state) {
-       Scanner sc = new Scanner(System.in);
-       String response = null;
-       String input = null;
+
+        Scanner sc = new Scanner(System.in);
+        String response = null;
+        String input = null;
 
         switch (state) {
             case START:
@@ -62,20 +65,25 @@ public class SoccerShop {
                 System.out.print("Store\n");
                 response = storeUsageMessage();
                 System.out.print(response);
-                input = sc.nextLine(); 
+                input = sc.nextLine();
                 state = parseInput(input);
                 while(!startStore(state).equals("back")){
                     response = storeUsageMessage();
                     System.out.print(response);
-                    input = sc.nextLine(); 
+                    input = sc.nextLine();
                     state = parseInput(input);
                 }
-
-                welcomeMessage();
-                response = startUsageMessage();
                 break;
             case CART:
                 ShoppingCart cart = ShoppingCart.getCart();
+                System.out.print(cart.toString());
+                System.out.print("Purchase items in cart? (Y/N): ");
+                String purchase = sc.nextLine();
+                purchase = purchase.trim().toLowerCase();
+
+                if (purchase.equals("y")) {
+                    cart.buyShoppingCart();
+                }
                 break;
             case LOGIN:
                 login();
@@ -84,24 +92,26 @@ public class SoccerShop {
                 break;
             
             case EXIT:
-                  exitUsageMessage();
+                exitUsageMessage();
                 System.exit(0);
                 break;
-       case USAGEMESSAGE:
+            case USAGEMESSAGE:
             default:
-                //response = usageMessageAction();
+                usageMessageStore();
                 break;
-       
+
         }
+        welcomeMessage();
+        response = startUsageMessage();
         return response;
     }
     private String storeUsageMessage() {
-        String msg = "\nOptions:\n\t1) View items\n\t2) Select tags\n\t3) Select sort\n\t4) Item Details\n\t5)Back\nWhere do you want to go?\n(select option by name)\n";    // fill in with options
+        String msg = "\nOptions:\n\t1) View items\n\t2) Select tags\n\t3) Select sort\n\t4) Item Details\n\t5) Back\nWhere do you want to go?\n(select option by name)\n";    // fill in with options
         return msg;
     }
     private void tagUsageMessage() {
 
-        System.out.println("\nOptions:\n\t1) (Enter TagID)\n\t2) Back\nSelect tage by tageID or 'back'.\n");
+        System.out.println("\nOptions:\n\t1) (Enter TagID)\n\t2) Back\nSelect tag by tagID or 'back'.\n");
     }
     private void sortUsageMessage() {
 
@@ -118,12 +128,20 @@ public class SoccerShop {
         String response = null;
         String input = null;
         int op = 0;
+        Connection con = DatabaseConnector.getConnection();
         switch (state) {
             case VIEWITEMS:
                 /* header with tags used*/
                 /* prints items(id, name stock, price)*/
                 /* response = viewitem (no action for while loop)*/
-                response = "viewitem";
+
+                response = "viewitems";
+                Item.getItems(con, sorttype);
+                ShoppingCart cart = ShoppingCart.getCart();
+                int itemID = getItemID();
+                Item item = DatabaseConnector.getItemByID(itemID);
+                cart.addItem(item);
+                usageMessage();
                 break;
             case LOGIN:
                 response = login().toString();
@@ -133,134 +151,38 @@ public class SoccerShop {
                 /* one at a time*/
                 /* response = viewitem (no action for while loop)*/
 
-                /*todo
-                 * -print all tags (from tags table in db)*/
                 System.out.println("\nSelect Tags");
+                Tags.getTags(con);
                 tagUsageMessage();
                 input = sc.nextLine();
                 state = parseInput(input);
-                while(!state.equals("BACK")){
+                while(state != ShopState.BACK){
                     /* insert tags*/
                     try {
                         op = Integer.parseInt(input);
-                        
-                    } catch (NumberFormatException e) {
-                        /* ussage message*/
-                        usageMessageStore();
+                        Tags.selectTag(con, op);
 
+                    } catch (NumberFormatException e) {
+                        /* usage message*/
+                        usageMessageStore();
                     }
+                    if (input == "clear")
+                        Tags.clearTags(con);
+                    Tags.getTags(con);
                     tagUsageMessage();
-                    input = sc.nextLine(); 
+                    input = sc.nextLine();
                     state = parseInput(input);
                 }
-                break;
-            case CLEARTAGS:
-                /*clears all tags*/
-                response = "clear";
+
+                response = "tags";
                 break;
         }
         return response;
     }
 
-    /*--------------------------------------------------------------------------
-    If user is employee, options are
-        1. View orders
-        2. Add items/stock
-        3. Change personal info
-    If user is admin, they can also view employees, and create and delete admin/employees
-    --------------------------------------------------------------------------*/
-       /* private ShopState employee()
-        {
-            ShopState response;
-        
-            case SELECTSORT:
-                System.out.println("\nSelect Sort");
-                sortUsageMessage();
-                int done = 0;
-                while (!done) {
-                    input = sc.nextLine();
-                    state = parseInput(input);
-                    switch(state) {
-                        case ITEMIDASC:
-                            sorttype[0] = 1;
-                            sorttype[1] = 0;
-                            sorttype[2] = 0;
-                            sorttype[3] = 0;
-                            sorttype[4] = 0;
-                            sorttype[5] = 0;
-
-                            break;
-                        case ITEMIDDESC:
-                            sorttype[0] = 0;
-                            sorttype[1] = 1;
-                            sorttype[2] = 0;
-                            sorttype[3] = 0;
-                            sorttype[4] = 0;
-                            sorttype[5] = 0;
-                            break;
-                        case ALPHAASC:
-                            sorttype[0] = 0;
-                            sorttype[1] = 0;
-                            sorttype[2] = 1;
-                            sorttype[3] = 0;
-                            sorttype[4] = 0;
-                            sorttype[5] = 0;
-                            break;
-                        case ALPHADESC:
-                            sorttype[0] = 0;
-                            sorttype[1] = 0;
-                            sorttype[2] = 0;
-                            sorttype[3] = 1;
-                            sorttype[4] = 0;
-                            sorttype[5] = 0;
-                            break;
-                        case PRICEASC:
-                            sorttype[0] = 0;
-                            sorttype[1] = 0;
-                            sorttype[2] = 0;
-                            sorttype[3] = 0;
-                            sorttype[4] = 1;
-                            sorttype[5] = 0;
-                            break;
-                        case PRICEDESC:
-                            sorttype[0] = 0;
-                            sorttype[1] = 0;
-                            sorttype[2] = 0;
-                            sorttype[3] = 0;
-                            sorttype[4] = 0;
-                            sorttype[5] = 1;
-                            break;
-                        case BACK:
-                            done = 1;
-                            break;
-                        case USAGEMESSAGE:
-                            break;
-                        default:
-                            response = usageMessageSORT();
-                            break;
-                    }
-                }
-
-                break;
-            case ITEMDETAILS:
-
-                
-                break;
-            case BACK:
-                response = "back"
-                break;
-            case USAGEMESSAGE:
-            default:
-                usageMessageStore();
-
-                break;
-
-            
-        }
-        return response;
-    }*/
     
-    private ShopState employee()
+
+    private ShopState login()
     {
         Scanner sc = new Scanner(new InputStreamReader(System.in));
         Connection con = null;
@@ -465,10 +387,9 @@ public class SoccerShop {
                     System.out.println("\nSucessfully logged in as " + rs.getString("email"));
                     type = rs.getString("type");
                     System.out.println("User type: " + type + "\n");
-                }                
-
+                }               
         } catch (SQLException e) {
-                e.printStackTrace();
+            e.printStackTrace();
         } finally {
                 try {
                         stmt.close();
@@ -494,28 +415,27 @@ public class SoccerShop {
         }
         return ShopState.STORE;
     }
-    
+
     private ShopState parseInput(String input) {
+        ShopState state = null;
+        input = input.replaceAll("\\s+","");    // get rid of whitespace
+        input = input.toUpperCase();    // make case-insensitive
 
-       ShopState state = null;
-       input = input.replaceAll("\\s+","");    // get rid of whitespace
-            input = input.toUpperCase();    // make case-insensitive
-
-       try {
-           state = ShopState.valueOf(input);
+        try {
+            state = ShopState.valueOf(input);
         }
-       catch (IllegalArgumentException iae){
-           state = ShopState.USAGEMESSAGE;     // invalid input (no matching ShopState)
+        catch (IllegalArgumentException iae){
+            state = ShopState.USAGEMESSAGE;     // invalid input (no matching ShopState)
         }
-       catch (Exception e) {
-           e.printStackTrace();    // program actually crashed -- shouldn't happen
+        catch (Exception e) {
+            e.printStackTrace();    // program actually crashed -- shouldn't happen
             System.exit(1);  // exit with error code flagged
         }
-       return state;
+        return state;
     }
 
     private String usageMessage() {
-       String msg = "These are your options:.... (REPLACE THIS): ";    // fill in with options
+        String msg = "These are your options:.... (REPLACE THIS): ";    // fill in with options
         return msg;
     }
 
@@ -524,12 +444,20 @@ public class SoccerShop {
         return msg;
     }
 
-
     private void exitUsageMessage() {
         System.out.println("\nThank You choosing the SoccerShop!\nGoodbye\n");    // fill in with options
     }
 
     private void welcomeMessage() {
        System.out.println("Welcome to the SoccerShop!");
+
+    }
+
+    public int getItemID() {
+        String input;
+        System.out.print("\nAdd item ID to cart: ");
+        Scanner sc = new Scanner(System.in);
+        input = sc.nextLine().trim();
+        return Integer.parseInt(input);
     }
 }

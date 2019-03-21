@@ -1,9 +1,12 @@
-import java.sql.*;
-import java.util.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Item {
-    
-    private String itemId;
+	
+	private String itemId;
 	private String name;
 	private double price;
 	private int stock;
@@ -12,7 +15,7 @@ public class Item {
 	private int quantity;
 
 	public Item() {
-        this.quantity = 0;
+        this.quantity = 1;
 	}
 
 	public int getQuantity() {return quantity;}
@@ -59,6 +62,12 @@ public class Item {
 	}
 
 	@Override
+    public String toString() {
+	    String itemStr = String.format("%s %s %s %s", itemId, name, price, stock);
+	    return itemStr;
+    }
+
+	@Override
 	public boolean equals(Object o) {
 		Item other;
 
@@ -86,47 +95,44 @@ public class Item {
             sortMethod = "ORDER BY S.price ASC";
         } else if (sortOption == 6) {
             sortMethod = "ORDER BY S.price DESC";
-        } else {
-            System.out.println("Invalid sort");
-            System.exit(1);
         }
-        
+
         try {
             ResultSet rs;
             int totalTags = 0;
             Statement statement = connect.createStatement();
             rs = statement.executeQuery(
-                    "SELECT COUNT(*) AS totalTags\n" + 
-                    "FROM Tags T\n" +
-                    "WHERE T.isSelected=true;\n"
+                    "SELECT COUNT(*) AS totalTags\n" +
+                            "FROM Tags T\n" +
+                            "WHERE T.isSelected=true;\n"
             );
             while (rs.next()) {
                 totalTags = rs.getInt("totalTags");
             }
             statement.executeUpdate(
                     "CREATE VIEW SelectedTags AS\n" +
-                    "SELECT I.itemID, I.name, I.price, I.stock, I.description, T.tagID\n" + 
-                    "FROM Items I, ItemTags IT, Tags T\n" +
-                    "WHERE I.itemID=IT.itemID AND T.tagID=IT.tagID AND T.isSelected=true;\n"
+                            "SELECT I.itemID, I.name, I.price, I.stock, I.description, T.tagID\n" +
+                            "FROM Items I, ItemTags IT, Tags T\n" +
+                            "WHERE I.itemID=IT.itemID AND T.tagID=IT.tagID AND T.isSelected=true;\n"
             );
-            statement.executeUpdate(     
-                    "CREATE VIEW NumTags AS\n" + 
-                    "SELECT S.itemID, COUNT(S.tagID) AS numTags\n" +
-                    "FROM SelectedTags S\n" +
-                    "GROUP BY S.itemID;\n"
+            statement.executeUpdate(
+                    "CREATE VIEW NumTags AS\n" +
+                            "SELECT S.itemID, COUNT(S.tagID) AS numTags\n" +
+                            "FROM SelectedTags S\n" +
+                            "GROUP BY S.itemID;\n"
             );
             if (totalTags > 0) {
                 rs = statement.executeQuery(
-                        "SELECT DISTINCT S.itemID, S.name, S.price, S.stock\n" + 
-                        "FROM SelectedTags S, NumTags N\n" +
-                        "WHERE N.numTags=" + totalTags + " AND N.itemID=S.itemID \n" +
-                        sortMethod + ";\n"
+                        "SELECT DISTINCT S.itemID, S.name, S.price, S.stock\n" +
+                                "FROM SelectedTags S, NumTags N\n" +
+                                "WHERE N.numTags=" + totalTags + " AND N.itemID=S.itemID \n" +
+                                sortMethod + ";\n"
                 );
             } else {
                 rs = statement.executeQuery(
-                        "SELECT S.itemID, S.name, S.price, S.stock\n" + 
-                        "FROM Items S\n" +
-                        sortMethod + ";\n"
+                        "SELECT S.itemID, S.name, S.price, S.stock\n" +
+                                "FROM Items S\n" +
+                                sortMethod + ";\n"
                 );
             }
             while (rs.next()) {
@@ -146,22 +152,24 @@ public class Item {
             statement.executeUpdate(
                     "DROP VIEW NumTags;\n"
             );
-            
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
-    
+
     static void getItem(Connection connect, int itemID) {
         try {
             ResultSet rs;
             Statement statement = connect.createStatement();
             rs = statement.executeQuery(
-                    "SELECT I.itemID, I.name, I.price, I.stock, I.description\n" + 
-                    "FROM Items I\n" +
-                    "WHERE I.itemID=" + itemID + ";\n"
+                    "SELECT I.itemID, I.name, I.price, I.stock, I.description\n" +
+                            "FROM Items I\n" +
+                            "WHERE I.itemID=" + itemID + ";\n"
             );
+            boolean hasNext = false;
             while (rs.next()) {
+                hasNext = true;
                 String name = rs.getString("name");
                 String price = rs.getString("price");
                 String stock = rs.getString("stock");
@@ -173,27 +181,29 @@ public class Item {
                         + "\t" + description
                 );
             }
+            if (!hasNext)
+                System.out.println("No items found.");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
-    
+
     static void insertItem(Connection connect, String name, double price, int stock, String description, List<Integer> tags) {
         try {
             Statement statement = connect.createStatement();
             statement.executeUpdate(
                     "INSERT INTO Items (name, price, stock, description)\n" +
-                    "VALUES (\"" + name +
-                    "\", " + price +
-                    ", " + stock +
-                    ", \"" + description +
-                    "\");\n"
+                            "VALUES (\"" + name +
+                            "\", " + price +
+                            ", " + stock +
+                            ", \"" + description +
+                            "\");\n"
             );
             ResultSet rs;
             int itemID = 0;
             rs = statement.executeQuery(
-                    "SELECT MAX(I.itemID) AS itemID\n" + 
-                    "FROM Items I;\n"
+                    "SELECT MAX(I.itemID) AS itemID\n" +
+                            "FROM Items I;\n"
             );
             while (rs.next()) {
                 itemID = rs.getInt("itemID");
@@ -201,33 +211,33 @@ public class Item {
             for (int tagID : tags) {
                 statement.executeUpdate(
                         "INSERT INTO ItemTags (itemID, tagID)\n" +
-                        "VALUES (" + itemID + ", " + tagID + ");\n"
+                                "VALUES (" + itemID + ", " + tagID + ");\n"
                 );
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
-    
+
     static void updateItemStock(Connection connect, int itemID, int stock) {
         try {
             Statement statement = connect.createStatement();
             statement.executeUpdate(
-                    "UPDATE Items\n" + 
-                    "SET stock=" + stock + "\n" +
-                    "WHERE itemID=" + itemID + ";\n"
+                    "UPDATE Items\n" +
+                            "SET stock=" + stock + "\n" +
+                            "WHERE itemID=" + itemID + ";\n"
             );
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
-    
+
     static void deleteItem(Connection connect, int itemID) {
         try {
             Statement statement = connect.createStatement();
             statement.executeUpdate(
                     "DELETE FROM Items\n" +
-                    "WHERE itemID=" + itemID + ";\n"
+                            "WHERE itemID=" + itemID + ";\n"
             );
         } catch (Exception e) {
             System.out.println(e.getMessage());

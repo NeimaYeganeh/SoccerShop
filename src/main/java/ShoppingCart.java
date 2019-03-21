@@ -53,7 +53,8 @@ public class ShoppingCart {
         order = new Order();
         double totalPrice = 0;
 
-        for (Item i : new ArrayList<>(items)) {
+        ArrayList<Item> tmpItems = new ArrayList<>(items);
+        for (Item i : tmpItems) {
             DatabaseConnector.purchaseItem(i);
             totalPrice += i.getPrice()*i.getQuantity();
         }
@@ -62,5 +63,13 @@ public class ShoppingCart {
         order.setPrice(totalPrice);
         order.setStatus(Order.Status.Awaiting);
         DatabaseConnector.storeOrder(order);
+    }
+
+    public String toString() {
+        String cartStr = "Your shopping cart:\n";
+        for (Item i : items) {
+            cartStr += i.toString() + "\n";
+        }
+        return cartStr;
     }
 }
