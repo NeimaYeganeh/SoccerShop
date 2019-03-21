@@ -1,12 +1,17 @@
 
+import javax.xml.crypto.Data;
 import java.io.InputStreamReader;
 import java.util.Scanner;
 import java.sql.*;
 
 public class SoccerShop {
+
     public int sorttype = 1; /*ITEMIDASC*/
+
     public enum ShopState {
-        START, USAGEMESSAGE, EXIT, STORE, CART, DONE, LOGIN, VIEWITEMS, ITEMDETAILS, SELECTTAGS, SELECTSORT, BACK, ITEMIDASC, ITEMIDDESC, ALPHAASC, ALPHADESC, PRICEASC, PRICEDESC
+        START, USAGEMESSAGE, EXIT, STORE, CART, DONE, LOGIN, VIEWITEMS,
+        ITEMDETAILS, SELECTTAGS, SELECTSORT, BACK, ITEMIDASC, ITEMIDDESC,
+        ALPHAASC, ALPHADESC, PRICEASC, PRICEDESC, CLEARTAGS,
     }
 
     private ShopState state;
@@ -92,7 +97,7 @@ public class SoccerShop {
     }
     private void tagUsageMessage() {
 
-        System.out.println("\nOptions:\n\t1) (Enter TagID)\n\t2) Back\nSelect tage by tageID or 'back'.\n");
+        System.out.println("\nOptions:\n\t1) (Enter TagID)\n\t2) Back\nSelect tag by tagID or 'back'.\n");
     }
     private void sortUsageMessage() {
 
@@ -125,19 +130,22 @@ public class SoccerShop {
                 /*todo
                  * -print all tags (from tags table in db)*/
                 System.out.println("\nSelect Tags");
+                Connection con = DatabaseConnector.getConnection();
+                Tags.getTags(con);
                 tagUsageMessage();
                 input = sc.nextLine();
                 state = parseInput(input);
-                while(!state.equals("BACK")){
+                while(state != ShopState.BACK){
                     /* insert tags*/
                     try {
                         op = Integer.parseInt(input);
+                        Tags.selectTag(con, op);
                         
                     } catch (NumberFormatException e) {
                         /* ussage message*/
                         usageMessageStore();
-
                     }
+                    Tags.getTags(con);
                     tagUsageMessage();
                     input = sc.nextLine(); 
                     state = parseInput(input);
@@ -279,10 +287,10 @@ public class SoccerShop {
         String msg = "\nOptions:\n\t1) (Enter item id)\n\t2) Back\nWhere do you want to go?\n(select by number)\n";    // fill in with options
         return msg;
     }
-    private String itemDetailsUsageMessage() {
-        String msg = "\nOptions:\n\t1) Add to cart\n\t2) Find another item\n\t3) Back\nWhere do you want to go?\n(select by number)\n";    // fill in with options
-        return msg;
-    }
+//    private String itemDetailsUsageMessage() {
+//        String msg = "\nOptions:\n\t1) Add to cart\n\t2) Find another item\n\t3) Back\nWhere do you want to go?\n(select by number)\n";    // fill in with options
+//        return msg;
+//    }
 
     private void exitUsageMessage() {
         System.out.println("\nThank You choosing the SoccerShop!\nGoodbye\n");    // fill in with options
