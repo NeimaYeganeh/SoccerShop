@@ -88,7 +88,7 @@ public class Order {
 		System.out.println("Do you want store pickup (Y/N) ?");
 		String pickup = sc.nextLine().trim().toUpperCase();
 
-		if (pickup == "Y") {
+		if (pickup.equals("Y")) {
 			isPickup = true;
 		}
 		else {

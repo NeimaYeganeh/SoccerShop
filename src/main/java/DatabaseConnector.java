@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public abstract class DatabaseConnector {
 
-    public static final String DB_ENDPOINT = "finalproject365.czbltj2ae4tp.us-west-1.rds.amazonaws.com/SoccerShop";
+    public static final String DB_ENDPOINT = "finalproject365.czbltj2ae4tp.us-west-1.rds.amazonaws.com/SoccerShop?useSSL=false";
 
     public static Connection getConnection() {
 
@@ -338,15 +338,14 @@ public abstract class DatabaseConnector {
         Item item = new Item();
         Connection con = null;
         PreparedStatement stmt = null;
-        ;
         ResultSet rs = null;
 
         try {
-
             con = getConnection();
-            String stmtString = "select * from items i\n" +
-                    "where i.itemID = $itemID;";
+            String stmtString = "select * from Items i\n" +
+                    "where i.itemID = ?";
             stmt = con.prepareStatement(stmtString);
+            stmt.setInt(1, itemId);
             rs = stmt.executeQuery();
 
             while (rs.next()) {
@@ -382,7 +381,7 @@ public abstract class DatabaseConnector {
         try {
 
             con = getConnection();
-            String stmtString = "select * from items i\n" +
+            String stmtString = "select * from Items i\n" +
                     "where i.itemID = $itemID;";
             stmt = con.prepareStatement(stmtString);
             rs = stmt.executeQuery();
@@ -465,7 +464,7 @@ public abstract class DatabaseConnector {
             // update the Order object with the generated OrderID
             ResultSet rs = stmt.getGeneratedKeys();
             if (rs.next())
-                order.setOrderId(rs.getString("orderID"));
+                order.setOrderId(rs.getString(1));
 
         } catch (SQLException e) {
             e.printStackTrace();
