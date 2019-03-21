@@ -1,5 +1,6 @@
 
-import static DatabaseConnector.getConnection;
+//import DatabaseConnector;
+
 import java.io.InputStreamReader;
 import java.util.Scanner;
 import java.sql.*;
@@ -9,14 +10,14 @@ public class SoccerShop {
     public enum ShopState {
         START, USAGEMESSAGE, EXIT, STORE, CART, DONE, LOGIN, VIEWITEMS, ADMIN, EMPLOYEE, 
         ITEMDETAILS, SELECTTAGS, SELECTSORT, BACK, ITEMIDASC, ITEMIDDESC, ALPHAASC, ALPHADESC,
-        PRICEASC, PRICEDESC
+        PRICEASC, PRICEDESC , CLEARTAGS
     }
 
     private ShopState state;
     private User.UserType type;
     
     public SoccerShop() {
-	this.state = ShopState.START;
+   this.state = ShopState.START;
     }
 
     // Main UI for the SoccerShop
@@ -49,9 +50,9 @@ public class SoccerShop {
         return msg;
     }
     private String doAction(ShopState state) {
-	    Scanner sc = new Scanner(System.in);
-	    String response = null;
-	    String input = null;
+       Scanner sc = new Scanner(System.in);
+       String response = null;
+       String input = null;
 
         switch (state) {
             case START:
@@ -78,17 +79,19 @@ public class SoccerShop {
                 break;
             case LOGIN:
                 login();
+                
+                response = startUsageMessage();
                 break;
-
+            
             case EXIT:
-		            exitUsageMessage();
+                  exitUsageMessage();
                 System.exit(0);
                 break;
-	    case USAGEMESSAGE:
+       case USAGEMESSAGE:
             default:
-                response = usageMessageAction();
+                //response = usageMessageAction();
                 break;
-	    
+       
         }
         return response;
     }
@@ -124,7 +127,7 @@ public class SoccerShop {
                 break;
             case LOGIN:
                 response = login().toString();
-
+                break;
             case SELECTTAGS:
                 /* prints tags and id, name, selected*/
                 /* one at a time*/
@@ -139,7 +142,7 @@ public class SoccerShop {
                 while(!state.equals("BACK")){
                     /* insert tags*/
                     try {
-                        op = Integer.parseInt(input)
+                        op = Integer.parseInt(input);
                         
                     } catch (NumberFormatException e) {
                         /* ussage message*/
@@ -153,7 +156,7 @@ public class SoccerShop {
                 break;
             case CLEARTAGS:
                 /*clears all tags*/
-                response = "clear"
+                response = "clear";
                 break;
         }
         return response;
@@ -166,7 +169,10 @@ public class SoccerShop {
         3. Change personal info
     If user is admin, they can also view employees, and create and delete admin/employees
     --------------------------------------------------------------------------*/
-        private ShopState employee()
+       /* private ShopState employee()
+        {
+            ShopState response;
+        
             case SELECTSORT:
                 System.out.println("\nSelect Sort");
                 sortUsageMessage();
@@ -228,6 +234,7 @@ public class SoccerShop {
                             done = 1;
                             break;
                         case USAGEMESSAGE:
+                            break;
                         default:
                             response = usageMessageSORT();
                             break;
@@ -251,25 +258,25 @@ public class SoccerShop {
             
         }
         return response;
-    }
+    }*/
     
-    private ShopState login()
+    private ShopState employee()
     {
         Scanner sc = new Scanner(new InputStreamReader(System.in));
         Connection con = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
        
-        System.out.println("Please enter 1 to view orders, 2 to add items,"
+        System.out.println("Please enter: 1 to view orders, 2 to add items,"
                 + " 3 to change personal info, or 4 to go back");
         
         switch (sc.nextInt()){
             case 1:
                 Order.Status status = null;
                                  
-            System.out.println("Filter by Order Status? Enter 0 to view all orders,"
-                    + " 1 to filter by Current, 2 for Awaiting, 3 for Processing, "
-                    + "4 for Failed, 5 for Shipped, 6 for Completed ");
+            System.out.println("Filter by Order Status?\t Enter 0 to view all orders,"
+                    + " 1 to filter by Current, 2 for Awaiting, 3 for Processing,\n "
+                    + "\t\t\t 4 for Failed, 5 for Shipped, 6 for Completed ");
 
                 switch (sc.nextInt()){
                 case 0:
@@ -295,7 +302,7 @@ public class SoccerShop {
                 default:
                     break;
                 }
-                Order.viewOrders(status);
+                Order.viewOrders(DatabaseConnector.getConnection(), status);
                 break;
             case 2:
                 
@@ -304,41 +311,41 @@ public class SoccerShop {
                 System.out.println("Enter stock amount to be updated");
                 
                 Item.updateItemStock(DatabaseConnector.getConnection(),i_num, sc.nextInt());
-                return ShopState.EMPLOYEE;
+                break;
 
             case 3:
                 System.out.println("Change Personal Info");
-                
                 break;
             case 4:
                 return ShopState.START;
             default:
                 System.out.println("Error: Invalid option selected");
-                return ShopState.EMPLOYEE;
+                break;
         }
+        employee();
         return ShopState.START;
 
     }
-    If user is admin, they can also view employees, and create and delete admin/employees
-        private ShopState admin()
-    {
+    //If user is admin, they can also view employees, and create and delete admin/employees
+      private ShopState admin()
+      {
         Scanner sc = new Scanner(new InputStreamReader(System.in));
         Connection con = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
        
-        System.out.println("Please enter 1 to view orders, 2 to add items,"
-                + " 3 to change personal info, 4 to view employees, "
-                + " 5 to create an employee/admin, 6 to delete an employee/admin,"
+        System.out.println("Please enter: 1 to view orders, 2 to add items,"
+                + " 3 to change personal info, 4 to view employees,\n "
+                + " \t      5 to create an employee/admin, 6 to delete an employee/admin,"
                 + " or 7 to go back");
         
         switch (sc.nextInt()){
             case 1:
                 Order.Status status = null;
                                  
-            System.out.println("Filter by Order Status? Enter 0 to view all orders,"
-                    + " 1 to filter by Current, 2 for Awaiting, 3 for Processing, "
-                    + "4 for Failed, 5 for Shipped, 6 for Completed ");
+            System.out.println("Filter by Order Status?\t Enter 0 to view all orders,"
+                    + " 1 to filter by Current, 2 for Awaiting, 3 for Processing,\n "
+                    + "\t\t\t 4 for Failed, 5 for Shipped, 6 for Completed ");
 
                 switch (sc.nextInt()){
                 case 0:
@@ -364,7 +371,7 @@ public class SoccerShop {
                 default:
                     break;
                 }
-                Order.viewOrders(status);
+                Order.viewOrders(DatabaseConnector.getConnection(), status);
                 break;
             case 2:
                 
@@ -373,7 +380,7 @@ public class SoccerShop {
                 System.out.println("Enter stock amount to be updated");
                 
                 Item.updateItemStock(DatabaseConnector.getConnection(),i_num, sc.nextInt());
-                return ShopState.ADMIN;
+                break;
 
             case 3:
                 System.out.println("Change Personal Info");
@@ -381,10 +388,10 @@ public class SoccerShop {
                 break;
             case 4:
                 User.getUsers(DatabaseConnector.getConnection());
-                return ShopState.ADMIN;
+                break;
             case 5:
                 
-                
+                sc.nextLine();
                 System.out.println("Enter user email");
                 String email = sc.nextLine();
                 
@@ -402,39 +409,34 @@ public class SoccerShop {
 
 
                 User.insertUser(DatabaseConnector.getConnection(), email, password, lastName,firstName,type);
-                return ShopState.ADMIN;
+                break;
             case 6:
                 System.out.println("Enter user email");
                 User.deleteUser(DatabaseConnector.getConnection(), sc.nextLine());
-                return ShopState.ADMIN;
+                break;
+            case 7:
+                return ShopState.START;
             default:
                 System.out.println("Error: Invalid option selected");
-                return ShopState.ADMIN;
+                break;
         }
+        admin();
         return ShopState.START;
-
     }
-    
-    
-    
-    
-    
-    
-    
     
     private ShopState login()
     {
-        
         Scanner sc = new Scanner(new InputStreamReader(System.in));
         int resp = 0;
         Connection con = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
-                
+        String type = null;
+         
         String email = null;
         String password = null;
         
-        System.out.println("Please enter 1 to Login, or 2 to go Back");
+        System.out.println("\tPlease enter 1 to Login, or 2 to go Back");
         if( (resp = sc.nextInt()) == 2)
             return ShopState.START;
         else if ( resp != 1)
@@ -443,57 +445,77 @@ public class SoccerShop {
             return ShopState.LOGIN;
         }
         //proceed to log in
-        System.out.println("Please enter your username");
+        sc.nextLine();
+        System.out.println("\tPlease enter your email");
         email = sc.nextLine();
         
-        System.out.println("Please enter your password");
+        System.out.println("\tPlease enter your password");
         password = sc.nextLine();
         
-        try {
-			
+        try { 
                 con = DatabaseConnector.getConnection();
-                String stmtString = "SELECT * FROM Users WHERE Users.email=? and Users.password=?";
+                String stmtString = "SELECT * FROM Users WHERE Users.email=? and Users.password=?;";
+                
                 stmt = con.prepareStatement(stmtString);
                 stmt.setString(1, email);
                 stmt.setString(2, password);
                 rs = stmt.executeQuery();
+                while (rs.next())
+                {                
+                    System.out.println("\nSucessfully logged in as " + rs.getString("email"));
+                    type = rs.getString("type");
+                    System.out.println("User type: " + type + "\n");
+                }                
 
-                this.type = User.UserType.valueOf(rs.getString("type"));
-                
         } catch (SQLException e) {
                 e.printStackTrace();
         } finally {
                 try {
                         stmt.close();
                         con.close();
+                        if ( type.equals("admin"))
+                        {
+                            admin();
+                            return ShopState.LOGIN;
+                        }
+                        else if ( type.equals("employee"))
+                        {
+                            employee();
+                            return ShopState.LOGIN;
+                        }
+                        else
+                        {
+                            return ShopState.STORE;
+                        }
+                         
                 } catch (SQLException e) {
                         e.printStackTrace();
-                }	
+                } 
         }
-        return ShopState.ADMIN;
+        return ShopState.STORE;
     }
     
     private ShopState parseInput(String input) {
 
-	    ShopState state = null;
-	    input = input.replaceAll("\\s+","");    // get rid of whitespace
+       ShopState state = null;
+       input = input.replaceAll("\\s+","");    // get rid of whitespace
             input = input.toUpperCase();    // make case-insensitive
 
-	    try {
-	        state = ShopState.valueOf(input);
+       try {
+           state = ShopState.valueOf(input);
         }
-	    catch (IllegalArgumentException iae){
-	        state = ShopState.USAGEMESSAGE;     // invalid input (no matching ShopState)
+       catch (IllegalArgumentException iae){
+           state = ShopState.USAGEMESSAGE;     // invalid input (no matching ShopState)
         }
-	    catch (Exception e) {
-	        e.printStackTrace();    // program actually crashed -- shouldn't happen
+       catch (Exception e) {
+           e.printStackTrace();    // program actually crashed -- shouldn't happen
             System.exit(1);  // exit with error code flagged
         }
-	    return state;
+       return state;
     }
 
     private String usageMessage() {
-	    String msg = "These are your options:.... (REPLACE THIS): ";    // fill in with options
+       String msg = "These are your options:.... (REPLACE THIS): ";    // fill in with options
         return msg;
     }
 
@@ -501,16 +523,13 @@ public class SoccerShop {
         String msg = "\nOptions:\n\t1) (Enter item id)\n\t2) Back\nWhere do you want to go?\n(select by number)\n";    // fill in with options
         return msg;
     }
-    private String itemDetailsUsageMessage() {
-        String msg = "\nOptions:\n\t1) Add to cart\n\t2) Find another item\n\t3) Back\nWhere do you want to go?\n(select by number)\n";    // fill in with options
-        return msg;
-    }
+
 
     private void exitUsageMessage() {
         System.out.println("\nThank You choosing the SoccerShop!\nGoodbye\n");    // fill in with options
     }
 
     private void welcomeMessage() {
-	    System.out.println("Welcome to the SoccerShop!");
+       System.out.println("Welcome to the SoccerShop!");
     }
 }

@@ -1,3 +1,6 @@
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.Scanner;
 
 public class Order {
@@ -71,7 +74,55 @@ public class Order {
 	public void setStatus(Status status) {
 		this.status = status;
 	}
-
+        public static void viewOrders(Connection connect, Status status){
+            
+            try {
+            ResultSet rs;
+            String filter = null;
+            int totalTags = 0;
+            Statement statement = connect.createStatement();
+            String query = "SELECT *" + 
+                    "FROM Orders as O\n";
+            if ( status != null )
+            {
+                query += "Where O.status = " + status.toString() + ";";
+                System.out.println("hi + status.toString()");
+            }
+            else
+                query += ";";
+            
+            rs = statement.executeQuery(query);
+            
+            System.out.println("orderID"
+                        + "\t" + "price"
+                        + "\t" + "status"
+                        + "\t" + "lastName"
+                        + "\t" + "firstName"
+                        + "\t" + "email"
+                        + "\t" + "isPickup"
+                        + "\t" + "street"
+                        + "\t" + "city"
+                        + "\t" + "state"
+                        + "\t" + "zip\n");
+            while (rs.next()) {
+                System.out.println(rs.getInt("orderID")
+                        + "\t" + rs.getDouble("price")
+                        + "\t" + rs.getString("status")
+                        + "\t" + rs.getString("lastName")
+                        + "\t" + rs.getString("firstName")
+                        + "\t" + rs.getString("email")
+                        + "\t" + rs.getInt("isPickup")
+                        + "\t" + rs.getString("street")
+                        + "\t" + rs.getString("city")
+                        + "\t" + rs.getString("state")
+                        + "\t" + rs.getString("zip")         
+                );
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            }
+        }
+        
 	public void setOrderDetails() {
 
 		Scanner sc = new Scanner(System.in);

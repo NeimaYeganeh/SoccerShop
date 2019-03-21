@@ -39,9 +39,9 @@ public class User {
 	public UserType getUserType() {
 		return type;
 	}
-	public ArrayList<Order> getOrders() {
-		return orders;
-	}
+	//public ArrayList<Order> getOrders() {
+	//	return orders;
+	//}
 	
 	public void setUserId(String userId) {
 		this.userId = userId;
@@ -58,25 +58,25 @@ public class User {
 	public void setUserType(UserType type) {
 		this.type = type;
 	}
-	public void setOrders(ArrayList<Order> orders) {
-		this.orders = orders;
-	}
+	//public void setOrders(ArrayList<Order> orders) {
+	//	this.orders = orders;
+	//}
         static void getUsers(Connection connect) {
             try {
             ResultSet rs;
             Statement statement = connect.createStatement();    
             rs = statement.executeQuery(
-                        "SELECT * from User"
+                        "SELECT * from Users;"
                 );
-            System.out.println("userID" 
-                        + "\temail"
+            System.out.println( 
+                         "\temail"
                         + "\tlastName"
                         + "\tfirstName"
                         + "\ttype\n");
                 
             while (rs.next()) {
-                System.out.println(rs.getString("userID")
-                        + "\t" + rs.getString("email")
+                System.out.println(
+                         "\t" + rs.getString("email")
                         + "\t" + rs.getString("lastName")
                         + "\t" + rs.getString("firstName")
                         + "\t" + rs.getString("type")
@@ -87,7 +87,7 @@ public class User {
                System.out.println(e.getMessage());
            }
         }
-        static void insertUser(Connection connect, String email, String password, String lastName, String firstName, UserType type) {
+        static void insertUser(Connection connect, String email, String password, String lastName, String firstName, String type) {
         try {
             Statement statement = connect.createStatement();
             statement.executeUpdate(
@@ -101,19 +101,7 @@ public class User {
             );
             ResultSet rs;
             int itemID = 0;
-            rs = statement.executeQuery(
-                    "SELECT MAX(I.itemID) AS itemID\n" + 
-                    "FROM Items I;\n"
-            );
-            while (rs.next()) {
-                itemID = rs.getInt("itemID");
-            }
-            for (int tagID : tags) {
-                statement.executeUpdate(
-                        "INSERT INTO ItemTags (itemID, tagID)\n" +
-                        "VALUES (" + itemID + ", " + tagID + ");\n"
-                );
-            }
+ 
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -131,5 +119,5 @@ public class User {
             System.out.println(e.getMessage());
         }
     }
-    }
+    
 }
