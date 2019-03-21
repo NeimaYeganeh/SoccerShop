@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public abstract class DatabaseConnector {
 
-    public static final String DB_ENDPOINT = "finalproject365.czbltj2ae4tp.us-west-1.rds.amazonaws.com";
+    public static final String DB_ENDPOINT = "finalproject365.czbltj2ae4tp.us-west-1.rds.amazonaws.com/SoccerShop";
 
     public static Connection getConnection() {
 
