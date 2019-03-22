@@ -47,6 +47,26 @@ public class SoccerShop {
         }
 
     }
+    
+    private ShopState parseInput(String input) {
+
+        ShopState state = null;
+        input = input.replaceAll("\\s+","");    // get rid of whitespace
+        input = input.toUpperCase();    // make case-insensitive
+
+        try {
+            state = ShopState.valueOf(input);
+        }
+        catch (IllegalArgumentException iae){
+            state = ShopState.USAGEMESSAGE;     // invalid input (no matching ShopState)
+        }
+        catch (Exception e) {
+            e.printStackTrace();    // program actually crashed -- shouldn't happen
+            System.exit(1);  // exit with error code flagged
+        }
+        return state;
+    }
+    
     private String startUsageMessage() {
         String msg = "\nOptions:\n\t1) Store\n\t2) Cart\n\t3) Login\n\t4) Exit\nWhere do you want to go?\n(select by name)\n";    // fill in with options
         return msg;
@@ -123,228 +143,6 @@ public class SoccerShop {
     private void usageMessageSORT() {
         System.out.println("invalid option please choose from");
     }
-    private String startStore(ShopState state) {
-        Scanner sc = new Scanner(new InputStreamReader(System.in));
-        String response = null;
-        String input = null;
-        int op = 0;
-        Connection con = DatabaseConnector.getConnection();
-        switch (state) {
-            case VIEWITEMS:
-                /* header with tags used*/
-                /* prints items(id, name stock, price)*/
-                /* response = viewitem (no action for while loop)*/
-
-                response = "viewitems";
-                Item.getItems(con, sorttype);
-                ShoppingCart cart = ShoppingCart.getCart();
-                int itemID = getItemID();
-                Item item = DatabaseConnector.getItemByID(itemID);
-                cart.addItem(item);
-                usageMessage();
-                break;
-            case LOGIN:
-                response = login().toString();
-                break;
-            case SELECTTAGS:
-                /* prints tags and id, name, selected*/
-                /* one at a time*/
-                /* response = viewitem (no action for while loop)*/
-
-                System.out.println("\nSelect Tags");
-                Tags.getTags(con);
-                tagUsageMessage();
-                input = sc.nextLine();
-                state = parseInput(input);
-                while(state != ShopState.BACK){
-                    /* insert tags*/
-                    try {
-                        op = Integer.parseInt(input);
-                        Tags.selectTag(con, op);
-
-                    } catch (NumberFormatException e) {
-                        /* usage message*/
-                        usageMessageStore();
-                    }
-                    if (input == "clear")
-                        Tags.clearTags(con);
-                    Tags.getTags(con);
-                    tagUsageMessage();
-                    input = sc.nextLine();
-                    state = parseInput(input);
-                }
-
-                response = "tags";
-                break;
-        }
-        return response;
-    }
-
-    
-
-    private ShopState login()
-    {
-        Scanner sc = new Scanner(new InputStreamReader(System.in));
-        Connection con = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-       
-        System.out.println("Please enter: 1 to view orders, 2 to add items,"
-                + " 3 to change personal info, or 4 to go back");
-        
-        switch (sc.nextInt()){
-            case 1:
-                Order.Status status = null;
-                                 
-            System.out.println("Filter by Order Status?\t Enter 0 to view all orders,"
-                    + " 1 to filter by Current, 2 for Awaiting, 3 for Processing,\n "
-                    + "\t\t\t 4 for Failed, 5 for Shipped, 6 for Completed ");
-
-                switch (sc.nextInt()){
-                case 0:
-                    break;
-                case 1:
-                    status = Order.Status.Current;
-                    break;
-                case 2:
-                    status = Order.Status.Awaiting;
-                    break;
-                case 3:
-                    status = Order.Status.Processing;
-                    break;
-                case 4:
-                    status = Order.Status.Failed;
-                    break;
-                case 5:
-                    status = Order.Status.Shipped;
-                    break;
-                case 6:
-                    status = Order.Status.Completed;
-                    break;
-                default:
-                    break;
-                }
-                Order.viewOrders(DatabaseConnector.getConnection(), status);
-                break;
-            case 2:
-                
-                System.out.println("Enter item number");
-                int i_num = sc.nextInt();
-                System.out.println("Enter stock amount to be updated");
-                
-                Item.updateItemStock(DatabaseConnector.getConnection(),i_num, sc.nextInt());
-                break;
-
-            case 3:
-                System.out.println("Change Personal Info");
-                break;
-            case 4:
-                return ShopState.START;
-            default:
-                System.out.println("Error: Invalid option selected");
-                break;
-        }
-        employee();
-        return ShopState.START;
-
-    }
-    //If user is admin, they can also view employees, and create and delete admin/employees
-      private ShopState admin()
-      {
-        Scanner sc = new Scanner(new InputStreamReader(System.in));
-        Connection con = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-       
-        System.out.println("Please enter: 1 to view orders, 2 to add items,"
-                + " 3 to change personal info, 4 to view employees,\n "
-                + " \t      5 to create an employee/admin, 6 to delete an employee/admin,"
-                + " or 7 to go back");
-        
-        switch (sc.nextInt()){
-            case 1:
-                Order.Status status = null;
-                                 
-            System.out.println("Filter by Order Status?\t Enter 0 to view all orders,"
-                    + " 1 to filter by Current, 2 for Awaiting, 3 for Processing,\n "
-                    + "\t\t\t 4 for Failed, 5 for Shipped, 6 for Completed ");
-
-                switch (sc.nextInt()){
-                case 0:
-                    break;
-                case 1:
-                    status = Order.Status.Current;
-                    break;
-                case 2:
-                    status = Order.Status.Awaiting;
-                    break;
-                case 3:
-                    status = Order.Status.Processing;
-                    break;
-                case 4:
-                    status = Order.Status.Failed;
-                    break;
-                case 5:
-                    status = Order.Status.Shipped;
-                    break;
-                case 6:
-                    status = Order.Status.Completed;
-                    break;
-                default:
-                    break;
-                }
-                Order.viewOrders(DatabaseConnector.getConnection(), status);
-                break;
-            case 2:
-                
-                System.out.println("Enter item number");
-                int i_num = sc.nextInt();
-                System.out.println("Enter stock amount to be updated");
-                
-                Item.updateItemStock(DatabaseConnector.getConnection(),i_num, sc.nextInt());
-                break;
-
-            case 3:
-                System.out.println("Change Personal Info");
-                
-                break;
-            case 4:
-                User.getUsers(DatabaseConnector.getConnection());
-                break;
-            case 5:
-                
-                sc.nextLine();
-                System.out.println("Enter user email");
-                String email = sc.nextLine();
-                
-                System.out.println("Enter password");
-                String password = sc.nextLine();
-                
-                System.out.println("Enter user last name");
-                String lastName = sc.nextLine();
-
-                System.out.println("Enter user first name");
-                String firstName = sc.nextLine();
-
-                System.out.println("Enter user type (admin or employee)");
-                User.UserType type = User.UserType.valueOf(sc.nextLine());
-
-
-                User.insertUser(DatabaseConnector.getConnection(), email, password, lastName,firstName,type);
-                break;
-            case 6:
-                System.out.println("Enter user email");
-                User.deleteUser(DatabaseConnector.getConnection(), sc.nextLine());
-                break;
-            case 7:
-                return ShopState.START;
-            default:
-                System.out.println("Error: Invalid option selected");
-                break;
-        }
-        admin();
-        return ShopState.START;
-    }
     
     private ShopState login()
     {
@@ -415,24 +213,230 @@ public class SoccerShop {
         }
         return ShopState.STORE;
     }
+    
+    private String startStore(ShopState state) {
+        Scanner sc = new Scanner(new InputStreamReader(System.in));
+        String response = null;
+        String input = null;
+        int op = 0;
+        Connection con = DatabaseConnector.getConnection();
+        switch (state) {
+            case VIEWITEMS:
+                /* header with tags used*/
+                /* prints items(id, name stock, price)*/
+                /* response = viewitem (no action for while loop)*/
 
-    private ShopState parseInput(String input) {
-        ShopState state = null;
-        input = input.replaceAll("\\s+","");    // get rid of whitespace
-        input = input.toUpperCase();    // make case-insensitive
+                response = "viewitems";
+                Item.getItems(con, sorttype);
+                ShoppingCart cart = ShoppingCart.getCart();
+                int itemID = getItemID();
+                Item item = DatabaseConnector.getItemByID(itemID);
+                cart.addItem(item);
+                usageMessage();
+                break;
+            case LOGIN:
+                response = login().toString();
+                break;
+            case SELECTTAGS:
+                /* prints tags and id, name, selected*/
+                /* one at a time*/
+                /* response = viewitem (no action for while loop)*/
 
-        try {
-            state = ShopState.valueOf(input);
+                System.out.println("\nSelect Tags");
+                Tags.getTags(con);
+                tagUsageMessage();
+                input = sc.nextLine();
+                state = parseInput(input);
+                while(state != ShopState.BACK){
+                    /* insert tags*/
+                    try {
+                        op = Integer.parseInt(input);
+                        Tags.selectTag(con, op);
+
+                    } catch (NumberFormatException e) {
+                        /* usage message*/
+                        usageMessageStore();
+                    }
+                    if (input == "clear")
+                        Tags.clearTags(con);
+                    Tags.getTags(con);
+                    tagUsageMessage();
+                    input = sc.nextLine();
+                    state = parseInput(input);
+                }
+
+                response = "tags";
+                break;
         }
-        catch (IllegalArgumentException iae){
-            state = ShopState.USAGEMESSAGE;     // invalid input (no matching ShopState)
-        }
-        catch (Exception e) {
-            e.printStackTrace();    // program actually crashed -- shouldn't happen
-            System.exit(1);  // exit with error code flagged
-        }
-        return state;
+        return response;
     }
+
+    
+
+    private ShopState employee()
+    {
+        Scanner sc = new Scanner(new InputStreamReader(System.in));
+        Connection con = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+       
+        System.out.println("Please enter: 1 to view orders, 2 to add items,"
+                + " 3 to change personal info, or 4 to go back");
+        
+        switch (sc.nextInt()){
+            case 1:
+                Order.Status status = null;
+                                 
+            System.out.println("Filter by Order Status?\t Enter 0 to view all orders,"
+                    + " 1 to filter by Current, 2 for Awaiting, 3 for Processing,\n "
+                    + "\t\t\t 4 for Failed, 5 for Shipped, 6 for Completed ");
+
+                switch (sc.nextInt()){
+                case 0:
+                    break;
+                case 1:
+                    status = Order.Status.Current;
+                    break;
+                case 2:
+                    status = Order.Status.Awaiting;
+                    break;
+                case 3:
+                    status = Order.Status.Processing;
+                    break;
+                case 4:
+                    status = Order.Status.Failed;
+                    break;
+                case 5:
+                    status = Order.Status.Shipped;
+                    break;
+                case 6:
+                    status = Order.Status.Completed;
+                    break;
+                default:
+                    break;
+                }
+                Order.viewOrders(DatabaseConnector.getConnection(), status);
+                break;
+            case 2:
+                
+                System.out.println("Enter item number");
+                int i_num = sc.nextInt();
+                System.out.println("Enter stock amount to be updated");
+                
+                Item.updateItemStock(DatabaseConnector.getConnection(),i_num, sc.nextInt());
+                break;
+
+            case 3:
+                System.out.println("Change Personal Info");
+                break;
+            case 4:
+                return ShopState.START;
+            default:
+                System.out.println("Error: Invalid option selected");
+                break;
+        }
+        employee();
+        return ShopState.START;
+
+    }
+    //If user is admin, they can also view employees, and create and delete admin/employees
+      private ShopState admin()
+      {
+        String ttype;
+        Scanner sc = new Scanner(new InputStreamReader(System.in));
+        Connection con = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+       
+        System.out.println("Please enter: 1 to view orders, 2 to add items,"
+                + " 3 to change personal info, 4 to view employees,\n "
+                + " \t      5 to create an employee/admin, 6 to delete an employee/admin,"
+                + " or 7 to go back");
+        
+        switch (sc.nextInt()){
+            case 1:
+                Order.Status status = null;
+                                 
+            System.out.println("Filter by Order Status?\t Enter 0 to view all orders,"
+                    + " 1 to filter by Current, 2 for Awaiting, 3 for Processing,\n "
+                    + "\t\t\t 4 for Failed, 5 for Shipped, 6 for Completed ");
+
+                switch (sc.nextInt()){
+                case 0:
+                    break;
+                case 1:
+                    status = Order.Status.Current;
+                    break;
+                case 2:
+                    status = Order.Status.Awaiting;
+                    break;
+                case 3:
+                    status = Order.Status.Processing;
+                    break;
+                case 4:
+                    status = Order.Status.Failed;
+                    break;
+                case 5:
+                    status = Order.Status.Shipped;
+                    break;
+                case 6:
+                    status = Order.Status.Completed;
+                    break;
+                default:
+                    break;
+                }
+                Order.viewOrders(DatabaseConnector.getConnection(), status);
+                break;
+            case 2:
+                
+                System.out.println("Enter item number");
+                int i_num = sc.nextInt();
+                System.out.println("Enter stock amount to be updated");
+                
+                Item.updateItemStock(DatabaseConnector.getConnection(),i_num, sc.nextInt());
+                break;
+
+            case 3:
+                System.out.println("Change Personal Info");
+                break;
+            case 4:
+                User.getUsers(DatabaseConnector.getConnection());
+                break;
+            case 5:
+                
+                sc.nextLine();
+                System.out.println("Enter user email");
+                String email = sc.nextLine();
+                
+                System.out.println("Enter password");
+                String password = sc.nextLine();
+                
+                System.out.println("Enter user last name");
+                String lastName = sc.nextLine();
+
+                System.out.println("Enter user first name");
+                String firstName = sc.nextLine();
+
+                System.out.println("Enter user type (Admin or Employee)");
+                ttype = sc.nextLine();
+
+                User.insertUser(DatabaseConnector.getConnection(), email, password, lastName,firstName, ttype);
+                break;
+            case 6:
+                System.out.println("Enter user email");
+                User.deleteUser(DatabaseConnector.getConnection(), sc.nextLine());
+                break;
+            case 7:
+                return ShopState.START;
+            default:
+                System.out.println("Error: Invalid option selected");
+                break;
+        }
+        admin();
+        return ShopState.START;
+    }
+    
+   
 
     private String usageMessage() {
         String msg = "These are your options:.... (REPLACE THIS): ";    // fill in with options

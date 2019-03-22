@@ -92,11 +92,11 @@ public class User {
             Statement statement = connect.createStatement();
             statement.executeUpdate(
                     "INSERT INTO Users (email, password, lastName, firstName, type)\n" +
-                    "VALUES ( " + email + 
-                    ", " + password +
-                    ", " + lastName +
-                    ", " + firstName +
-                    ", " + type +
+                    "VALUES ( \"" + email + 
+                    "\", \"" + password +
+                    "\", \"" + lastName +
+                    "\", \"" + firstName +
+                    "\", \"" + type +
                     "\");\n"
             );
             ResultSet rs;
